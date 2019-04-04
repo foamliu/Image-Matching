@@ -24,13 +24,13 @@ data_transforms = {
 
 
 class FrameDataset(Dataset):
-    def __init__(self, split, mode):
+    def __init__(self, split):
         with open(pickle_file, 'rb') as file:
             data = pickle.load(file)
 
         self.split = split
         self.samples = data
-        self.transformer = data_transforms[mode]
+        self.transformer = data_transforms[split]
 
     def __getitem__(self, i):
         sample = self.samples[i]
