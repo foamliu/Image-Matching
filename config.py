@@ -5,8 +5,8 @@ import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # sets device for model and PyTorch tensors
 
 # Model parameters
-image_w = 448
-image_h = 448
+image_w = 112
+image_h = 112
 channel = 3
 
 # Training parameters
@@ -16,8 +16,8 @@ print_freq = 100  # print training/validation stats  every __ batches
 checkpoint = None  # path to checkpoint, None if none
 
 # Data parameters
-num_classes = 85164
-num_samples = 3804846
+num_classes = 9935
+num_samples = 373471
 DATA_DIR = 'data'
 IMG_DIR = 'data/data/frame/cron20190326'
 pickle_file = 'data/faces_ms1m_112x112.pickle'
