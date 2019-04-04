@@ -37,7 +37,7 @@ class FrameDataset(Dataset):
         filename = sample['img']
         label = sample['label']
 
-        filename = os.path.join(IMG_DIR, filename)
+        # print(filename)
         img = cv.imread(filename)  # BGR
         img = cv.resize(img, (image_w, image_h))
         img = img[..., ::-1]  # RGB
