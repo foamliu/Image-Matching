@@ -43,7 +43,6 @@ class FrameDataset(Dataset):
         img = img[..., ::-1]  # RGB
         img = Image.fromarray(img, 'RGB')  # RGB
         img = self.transformer(img)  # RGB
-        label
 
         return img, label
 
