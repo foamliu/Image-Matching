@@ -18,6 +18,7 @@ checkpoint = None  # path to checkpoint, None if none
 # Data parameters
 num_classes = 9935
 num_samples = 373471
+num_tests = 10000
 DATA_DIR = 'data'
 IMG_DIR = 'data/data/frame/cron20190326'
 pickle_file = 'data/cron20190326_112x112.pickle'
