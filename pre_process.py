@@ -43,7 +43,6 @@ if __name__ == "__main__":
     VOCAB = {}
     IVOCAB = {}
 
-    num_tests
     num_same = int(num_tests / 2)
     num_not_same = num_tests - num_same
 
@@ -75,8 +74,8 @@ if __name__ == "__main__":
                 [f for f in os.listdir(os.path.join(IMG_DIR, folders[1])) if f.endswith('.jpg')]) < 1:
             folders = random.sample(dirs, 2)
 
-        file_0 = pick_one_file(os.path.join(IMG_DIR, folders[0]))
-        file_1 = pick_one_file(os.path.join(IMG_DIR, folders[1]))
+        file_0 = pick_one_file(os.path.join(IMG_DIR, folders[0])).replace('\\', '/').replace(IMG_DIR, '')
+        file_1 = pick_one_file(os.path.join(IMG_DIR, folders[1])).replace('\\', '/').replace(IMG_DIR, '')
         out_lines.append('{} {} {}\n'.format(file_0, file_1, 0))
 
     with open('data/test_pairs.txt', 'w') as file:
