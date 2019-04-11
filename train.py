@@ -97,13 +97,13 @@ def train_net(args):
         writer.add_scalar('Train_Top5_Accuracy', train_top5_accs, epoch)
 
         # One epoch's validation
-        valid_loss, valid_top5_accs = test(model)
-        writer.add_scalar('Valid_Loss', valid_loss, epoch)
-        writer.add_scalar('Valid_Top5_Accuracy', valid_top5_accs, epoch)
+        val_acc, thres = test(model)
+        writer.add_scalar('Valid_Loss', val_acc, epoch)
+        writer.add_scalar('Valid_Top5_Accuracy', val_acc, epoch)
 
         # Check if there was an improvement
-        is_best = valid_top5_accs > best_acc
-        best_acc = max(valid_top5_accs, best_acc)
+        is_best = val_acc > best_acc
+        best_acc = max(val_acc, best_acc)
         if not is_best:
             epochs_since_improvement += 1
             print("\nEpochs since last improvement: %d\n" % (epochs_since_improvement,))
