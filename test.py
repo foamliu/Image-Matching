@@ -60,11 +60,8 @@ def evaluate(model):
             x0 = feature0 / np.linalg.norm(feature0)
             x1 = feature1 / np.linalg.norm(feature1)
             cosine = np.dot(x0, x1)
-            try:
-                theta = math.acos(cosine)
-            except ValueError:
-                print('cosine: ' + str(cosine))
-                raise
+            cosine = np.clip(cosine, -1, 1)
+            theta = math.acos(cosine)
             theta = theta * 180 / math.pi
             is_same = tokens[2]
             angles.append('{} {}\n'.format(theta, is_same))
