@@ -34,7 +34,7 @@ class FrameDataset(Dataset):
 
     def __getitem__(self, i):
         sample = self.samples[i]
-        filename = sample['img']
+        filename = os.path.join(IMG_DIR, sample['img'])
         label = sample['label']
 
         # print(filename)
