@@ -77,7 +77,6 @@ def train_net(args):
 
     # Custom dataloaders
     train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True)
-    valid_loader = torch.utils.data.DataLoader(FrameDataset('valid'), batch_size=args.batch_size, shuffle=False)
 
     scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
 
