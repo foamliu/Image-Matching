@@ -10,7 +10,7 @@ import torch
 from PIL import Image
 from matplotlib import pyplot as plt
 
-from config import device, num_tests
+from config import device, num_tests, IMG_DIR
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
@@ -23,6 +23,7 @@ def extract(filename):
 
 
 def get_image(transformer, file):
+    file = os.path.join(IMG_DIR, file)
     img = cv.imread(file)
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
