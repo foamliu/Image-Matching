@@ -36,6 +36,7 @@ def pick_one_file(folder):
     files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg')]
     file = random.choice(files)
     file = os.path.join(folder, file)
+    file = file.replace('\\', '/')
     return file
 
 
@@ -58,9 +59,11 @@ if __name__ == "__main__":
 
         files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg')]
         files = random.sample(files, 2)
-        out_lines.append('{} {} {}\n'.format(os.path.join(folder, files[0]), os.path.join(folder, files[1]), 1))
-        exclude_list.add(os.path.join(folder, files[0]))
-        exclude_list.add(os.path.join(folder, files[1]))
+        file_0 = os.path.join(folder, files[0]).replace('\\', '/')
+        file_1 = os.path.join(folder, files[1]).replace('\\', '/')
+        out_lines.append('{} {} {}\n'.format(file_0, file_1, 1))
+        exclude_list.add(file_0)
+        exclude_list.add(file_1)
 
     for _ in tqdm(range(num_not_same)):
         dirs = [d for d in os.listdir(IMG_DIR) if os.path.isdir(os.path.join(IMG_DIR, d))]
