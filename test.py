@@ -179,7 +179,6 @@ def error_analysis(threshold):
 
 def copy_file(old, new):
     img = cv.imread(old)
-    cv.resize(img, (224, 224))
     new_fn = os.path.join('images', new)
     cv.imwrite(new_fn, img)
 

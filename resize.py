@@ -4,18 +4,17 @@ from multiprocessing import Pool
 import cv2 as cv
 from tqdm import tqdm
 
-from config import IMG_DIR
-
-image_w = 112
-image_h = 112
-folder = 'data/cron20190326_resized'
+image_w = 224
+image_h = 224
+new_folder = 'data/cron20190326_resized'
+old_folder = 'data/data/frame/cron20190326'
 
 
 def resize_images(d):
-    dir = os.path.join(IMG_DIR, d)
+    dir = os.path.join(old_folder, d)
     files = [f for f in os.listdir(dir) if f.endswith('.jpg')]
 
-    dst_folder = os.path.join(folder, d)
+    dst_folder = os.path.join(new_folder, d)
     if not os.path.isdir(dst_folder):
         os.makedirs(dst_folder)
 
@@ -28,9 +27,9 @@ def resize_images(d):
 
 
 if __name__ == "__main__":
-    if not os.path.isdir(folder):
-        os.makedirs(folder)
+    if not os.path.isdir(new_folder):
+        os.makedirs(new_folder)
 
-    dirs = [d for d in os.listdir(IMG_DIR) if os.path.isdir(os.path.join(IMG_DIR, d))]
+    dirs = [d for d in os.listdir(old_folder) if os.path.isdir(os.path.join(old_folder, d))]
     with Pool(6) as p:
         r = list(tqdm(p.imap(resize_images, dirs), total=len(dirs)))
