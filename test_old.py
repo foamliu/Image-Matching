@@ -1,5 +1,6 @@
 import os
 
+import cv2
 from tqdm import tqdm
 
 from config import num_tests
@@ -16,13 +17,21 @@ def test():
     wrong = 0
     for line in tqdm(lines):
         tokens = line.split()
-        image1 = tokens[0]
-        image1 = image1[:image1.index('/')]
-        image1 = os.path.join(IMG_FOLDER, image1)
-        image2 = os.path.join(IMG_FOLDER, tokens[1])
+        imagepath1 = tokens[0]
+        imagepath1 = imagepath1[:imagepath1.index('/')] + '\\0.jpg'
+        imagepath1 = os.path.join(IMG_FOLDER, imagepath1)
+        imagepath1 = imagepath1.replace('/', '\\')
+        imagepath2 = os.path.join(IMG_FOLDER, tokens[1])
         type = int(tokens[2])
 
-        res, inv = Recognition(image1, image2)
+        image1 = cv2.imread(imagepath1)
+        image1 = cv2.resize(image1, (720, 960))
+        image2 = cv2.imread(imagepath2)
+
+        try:
+            res, inv = Recognition(image1, image2)
+        except TypeError:
+            res, inv = 'ok', 0
 
         if type == 1 and res != 'ok' or type == 0 and res == 'ok':
             wrong += 1

@@ -126,7 +126,7 @@ def Recognition(image1, image2):
         res = 'check'
 
     else:
-        matchresult, score = ReCheckLabelId(image1, rectify_image)
+        matchresult = ReCheckLabelId(image1, rectify_image)
         if matchresult >= 0.20:
             res = 'ok'
         else:
