@@ -3,8 +3,8 @@ import torch
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # sets device for model and PyTorch tensors
 
 # Model parameters
-image_w = 224
-image_h = 224
+image_w = 112
+image_h = 112
 channel = 3
 
 # Training parameters
@@ -15,8 +15,8 @@ checkpoint = None  # path to checkpoint, None if none
 
 # Data parameters
 num_classes = 9935
-num_samples = 354619  # before filtering: 373471
+num_samples = 362267  # before filtering: 373471
 num_tests = 10000
 DATA_DIR = 'data'
 IMG_DIR = 'data/cron20190326_resized/'
-pickle_file = 'data/cron20190326_224x224.pickle'
+pickle_file = 'data/cron20190326_112x112.pickle'
