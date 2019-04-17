@@ -75,7 +75,7 @@ if __name__ == "__main__":
              f.endswith('.jpg') and not f.endswith('0.jpg')]) < 1:
             folders = random.sample(dirs, 2)
 
-        file_0 = os.path.join(folders[0], '0.jpg')
+        file_0 = folders[0] + '/' + '0.jpg'
         file_1 = pick_one_file(folders[1])
         out_lines.append('{} {} {}\n'.format(file_0, file_1, 0))
         exclude_list.add(os.path.join(file_0))
