@@ -33,7 +33,7 @@ def build_vocab(token):
 
 
 def pick_one_file(folder):
-    files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg')]
+    files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg') and not f.endswith('0.jpg')]
     file = random.choice(files)
     file = os.path.join(folder, file)
     file = file.replace('\\', '/')
@@ -54,13 +54,14 @@ if __name__ == "__main__":
     for _ in tqdm(range(num_same)):
         dirs = [d for d in os.listdir(IMG_DIR) if os.path.isdir(os.path.join(IMG_DIR, d))]
         folder = random.choice(dirs)
-        while len([f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg')]) < 2:
+        while len([f for f in os.listdir(os.path.join(IMG_DIR, folder)) if
+                   f.endswith('.jpg') and not f.endswith('0.jpg')]) < 1:
             folder = random.choice(dirs)
 
-        files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg')]
-        files = random.sample(files, 2)
-        file_0 = os.path.join(folder, files[0]).replace('\\', '/')
-        file_1 = os.path.join(folder, files[1]).replace('\\', '/')
+        files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg') and not f.endswith('0.jpg')]
+        files = random.choice(files)
+        file_0 = os.path.join(folder, '0.jpg').replace('\\', '/')
+        file_1 = os.path.join(folder, files[0]).replace('\\', '/')
         out_lines.append('{} {} {}\n'.format(file_0, file_1, 1))
         exclude_list.add(file_0)
         exclude_list.add(file_1)
@@ -68,11 +69,13 @@ if __name__ == "__main__":
     for _ in tqdm(range(num_not_same)):
         dirs = [d for d in os.listdir(IMG_DIR) if os.path.isdir(os.path.join(IMG_DIR, d))]
         folders = random.sample(dirs, 2)
-        while len([f for f in os.listdir(os.path.join(IMG_DIR, folders[0])) if f.endswith('.jpg')]) < 1 or len(
-                [f for f in os.listdir(os.path.join(IMG_DIR, folders[1])) if f.endswith('.jpg')]) < 1:
+        while len([f for f in os.listdir(os.path.join(IMG_DIR, folders[0])) if
+                   f.endswith('.jpg') and not f.endswith('0.jpg')]) < 1 or len(
+            [f for f in os.listdir(os.path.join(IMG_DIR, folders[1])) if
+             f.endswith('.jpg') and not f.endswith('0.jpg')]) < 1:
             folders = random.sample(dirs, 2)
 
-        file_0 = pick_one_file(folders[0])
+        file_0 = os.path.join(folders[0], '0.jpg')
         file_1 = pick_one_file(folders[1])
         out_lines.append('{} {} {}\n'.format(file_0, file_1, 0))
         exclude_list.add(os.path.join(file_0))

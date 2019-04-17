@@ -14,7 +14,7 @@ from config import device, num_tests, IMG_DIR
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
-test_file = 'data/test_pairs_1.txt'
+test_file = 'data/test_pairs.txt'
 
 
 def extract(filename):
