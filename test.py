@@ -23,9 +23,7 @@ def extract(filename):
 
 
 def get_image(transformer, file):
-    print(file)
     file = os.path.join(IMG_DIR, file)
-    print(file)
     img = cv.imread(file)
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
