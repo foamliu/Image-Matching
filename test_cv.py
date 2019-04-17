@@ -3,7 +3,6 @@ import os
 import cv2
 from tqdm import tqdm
 
-from config import num_tests
 from match_feature import Recognition
 
 TEST_FILE = 'data/test_pairs.txt'
@@ -15,6 +14,7 @@ def test():
         lines = file.readlines()
 
     wrong = 0
+    num_tests = 0
     for line in tqdm(lines):
         tokens = line.split()
         imagepath1 = tokens[0]
@@ -28,13 +28,14 @@ def test():
         image1 = cv2.resize(image1, (720, 960))
         image2 = cv2.imread(imagepath2)
 
-        # try:
-        res, inv = Recognition(image1, image2)
-        # except TypeError:
-        #     res, inv = 'ok', 0
+        try:
+            res, inv = Recognition(image1, image2)
 
-        if type == 1 and res != 'ok' or type == 0 and res == 'ok':
-            wrong += 1
+            num_tests += 1
+            if type == 1 and res != 'ok' or type == 0 and res == 'ok':
+                wrong += 1
+        except TypeError:
+            print(line)
 
     accuracy = 1 - wrong / num_tests
     return accuracy
