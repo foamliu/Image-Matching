@@ -15,7 +15,7 @@ checkpoint = None  # path to checkpoint, None if none
 
 # Data parameters
 num_classes = 9935
-num_samples = 362267  # before filtering: 373471
+num_samples = 357646  # before filtering: 373471
 num_tests = 10000
 DATA_DIR = 'data'
 IMG_DIR = 'data/cron20190326_resized/'

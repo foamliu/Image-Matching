@@ -59,9 +59,9 @@ if __name__ == "__main__":
             folder = random.choice(dirs)
 
         files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg') and not f.endswith('0.jpg')]
-        files = random.choice(files)
+        file_1 = random.choice(files)
         file_0 = os.path.join(folder, '0.jpg').replace('\\', '/')
-        file_1 = os.path.join(folder, files[0]).replace('\\', '/')
+        file_1 = os.path.join(folder, file_1).replace('\\', '/')
         out_lines.append('{} {} {}\n'.format(file_0, file_1, 1))
         exclude_list.add(file_0)
         exclude_list.add(file_1)
