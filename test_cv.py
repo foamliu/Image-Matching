@@ -28,10 +28,10 @@ def test():
         image1 = cv2.resize(image1, (720, 960))
         image2 = cv2.imread(imagepath2)
 
-        try:
-            res, inv = Recognition(image1, image2)
-        except TypeError:
-            res, inv = 'ok', 0
+        # try:
+        res, inv = Recognition(image1, image2)
+        # except TypeError:
+        #     res, inv = 'ok', 0
 
         if type == 1 and res != 'ok' or type == 0 and res == 'ok':
             wrong += 1
