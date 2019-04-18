@@ -15,6 +15,7 @@ def test():
 
     wrong = 0
     num_tests = 0
+    num_ex = 0
     for line in tqdm(lines):
         tokens = line.split()
         imagepath1 = tokens[0]
@@ -35,13 +36,14 @@ def test():
             if type == 1 and res != 'ok' or type == 0 and res == 'ok':
                 wrong += 1
         except TypeError:
+            num_ex += 1
             print(line)
 
     accuracy = 1 - wrong / num_tests
-    return accuracy
+    return accuracy, num_ex
 
 
 if __name__ == "__main__":
-    acc = test()
+    acc, num_ex = test()
 
-    print('acc: {}'.format(acc))
+    print('acc: {}, exceptions: {}'.format(acc, num_ex))
