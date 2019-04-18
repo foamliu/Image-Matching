@@ -64,10 +64,10 @@ def evaluate(model):
             theta = math.acos(cosine)
             theta = theta * 180 / math.pi
             is_same = tokens[2]
-            angles.append('{} {}\n'.format(theta, is_same))
+            angles.append('{} {} {} {} \n'.format(theta, is_same, file0, file1))
 
     elapsed_time = time.time() - start
-    print('elapsed time(sec) per image: {}'.format(elapsed_time / (6000 * 2)))
+    print('elapsed time(sec) per image: {}'.format(elapsed_time / (num_tests * 2)))
 
     with open('data/angles.txt', 'w') as file:
         file.writelines(angles)
@@ -141,12 +141,15 @@ def error_analysis(threshold):
         tokens = line.split()
         angle = float(tokens[0])
         type = int(tokens[1])
+        file0 = tokens[2]
+        file1 = tokens[3]
+        new_line = '{} {} {}\n'.format(file0, file1, type)
         if angle <= threshold and type == 0:
             fp.append(i)
-            fp_lines.append(line)
+            fp_lines.append(new_line)
         if angle > threshold and type == 1:
             fn.append(i)
-            fn_lines.append(line)
+            fn_lines.append(new_line)
 
     print('len(fp): ' + str(len(fp)))
     print('len(fn): ' + str(len(fn)))
