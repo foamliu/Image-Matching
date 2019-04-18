@@ -122,12 +122,8 @@ def accuracy(threshold):
         tokens = line.split()
         angle = float(tokens[0])
         type = int(tokens[1])
-        if type == 1:
-            if angle > threshold:
-                wrong += 1
-        else:
-            if angle <= threshold:
-                wrong += 1
+        if type == 1 and angle > threshold or type == 0 and angle <= threshold:
+            wrong += 1
 
     accuracy = 1 - wrong / num_tests
     return accuracy
@@ -139,14 +135,18 @@ def error_analysis(threshold):
 
     fp = []
     fn = []
+    fp_lines = []
+    fn_lines = []
     for i, line in enumerate(angle_lines):
         tokens = line.split()
         angle = float(tokens[0])
         type = int(tokens[1])
         if angle <= threshold and type == 0:
             fp.append(i)
+            fp_lines.append(line)
         if angle > threshold and type == 1:
             fn.append(i)
+            fn_lines.append(line)
 
     print('len(fp): ' + str(len(fp)))
     print('len(fn): ' + str(len(fn)))
@@ -175,6 +175,12 @@ def error_analysis(threshold):
         copy_file(file0, '{}_fn_0.jpg'.format(i))
         file1 = tokens[1]
         copy_file(file1, '{}_fn_1.jpg'.format(i))
+
+    with open('data/errors.txt', 'w') as file:
+        file.write('FP:\n')
+        file.writelines(fp_lines)
+        file.write('FN:\n')
+        file.writelines(fn_lines)
 
 
 def copy_file(old, new):
