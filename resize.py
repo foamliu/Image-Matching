@@ -3,7 +3,7 @@ from multiprocessing import Pool
 
 import cv2 as cv
 from tqdm import tqdm
-from config import image_w, image_h
+from config import im_size
 
 
 new_folder = 'data/cron20190326_resized'
@@ -21,7 +21,7 @@ def resize_images(d):
     for f in files:
         img_path = os.path.join(dir, f)
         img = cv.imread(img_path)
-        img = cv.resize(img, (image_w, image_h))
+        img = cv.resize(img, (im_size, im_size))
         dst_file = os.path.join(dst_folder, f)
         cv.imwrite(dst_file, img)
 

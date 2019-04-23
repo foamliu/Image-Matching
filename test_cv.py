@@ -44,6 +44,7 @@ def test():
 
 
 if __name__ == "__main__":
+
     acc, num_ex = test()
 
     print('acc: {}, exceptions: {}'.format(acc, num_ex))

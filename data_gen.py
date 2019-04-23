@@ -6,7 +6,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from config import IMG_DIR, image_w, image_h, pickle_file
+from config import IMG_DIR, im_size, pickle_file
 
 # Data augmentation and normalization for training
 # Just normalization for validation
@@ -39,7 +39,7 @@ class FrameDataset(Dataset):
 
         # print(filename)
         img = cv.imread(filename)  # BGR
-        img = cv.resize(img, (image_w, image_h))
+        img = cv.resize(img, (im_size, im_size))
         img = img[..., ::-1]  # RGB
         img = Image.fromarray(img, 'RGB')  # RGB
         img = self.transformer(img)  # RGB
