@@ -18,4 +18,4 @@ num_samples = 357646  # before filtering: 373471
 num_tests = 10000
 DATA_DIR = 'data'
 IMG_DIR = 'data/cron20190326_resized/'
-pickle_file = 'data/cron20190326_112x112.pickle'
+pickle_file = 'data/cron20190326.pickle'
