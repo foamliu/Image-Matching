@@ -9,7 +9,7 @@ import scipy.stats
 import torch
 from PIL import Image
 from matplotlib import pyplot as plt
-
+from config import im_size
 from config import device, num_tests, IMG_DIR
 from data_gen import data_transforms
 
@@ -50,7 +50,7 @@ def evaluate(model):
             img0 = get_image(transformer, file0)
             file1 = tokens[1]
             img1 = get_image(transformer, file1)
-            imgs = torch.zeros([2, 3, 112, 112], dtype=torch.float)
+            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float)
             imgs[0] = img0
             imgs[1] = img1
             output = model(imgs)
