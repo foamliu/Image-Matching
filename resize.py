@@ -3,11 +3,11 @@ from multiprocessing import Pool
 
 import cv2 as cv
 from tqdm import tqdm
+
 from config import im_size
 
-
-new_folder = r'D:\Users\foamliu\data\Image-Matching\data\cron20190326_resized'
-old_folder = r'D:\Users\foamliu\data\Image-Matching\data\data\frame\cron20190326'
+new_folder = 'data/cron20190326_resized'
+old_folder = 'data/data/frame/cron20190326'
 
 
 def resize_images(d):
