@@ -1,8 +1,10 @@
 import os
+import time
 
 import cv2
 from tqdm import tqdm
 
+from config import num_tests
 from match_feature import Recognition
 
 TEST_FILE = 'data/test_pairs.txt'
@@ -44,7 +46,11 @@ def test():
 
 
 if __name__ == "__main__":
-
+    start = time.time()
     acc, num_ex = test()
+    end = time.time()
+    elapsed = end - start
 
     print('acc: {}, exceptions: {}'.format(acc, num_ex))
+    print('elapsed: {}'.format(elapsed))
+    print('elapsed per pair: {}'.format(elapsed / num_tests))
