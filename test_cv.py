@@ -20,10 +20,7 @@ def test():
     num_ex = 0
     for line in tqdm(lines):
         tokens = line.split()
-        imagepath1 = tokens[0]
-        imagepath1 = imagepath1[:imagepath1.index('/')] + '\\0.jpg'
-        imagepath1 = os.path.join(IMG_FOLDER, imagepath1)
-        imagepath1 = imagepath1.replace('/', '\\')
+        imagepath1 = os.path.join(IMG_FOLDER, tokens[0])
         imagepath2 = os.path.join(IMG_FOLDER, tokens[1])
         type = int(tokens[2])
 
