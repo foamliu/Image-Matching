@@ -212,7 +212,6 @@ class ResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
-        x = self.maxpool(x)
         x = self.bn2(x)
         x = self.dropout(x)
         x = x.view(x.size(0), -1)
