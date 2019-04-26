@@ -236,10 +236,9 @@ def test(model):
 
 if __name__ == "__main__":
     checkpoint = 'BEST_checkpoint.tar'
-    checkpoint = torch.load(checkpoint, map_location='cpu')
+    checkpoint = torch.load(checkpoint)
     model = checkpoint['model']
-    # model = model.to(device)
-    model = model.cpu().double()
+    model = model.to(device)
     model.eval()
 
     acc, threshold = test(model)
