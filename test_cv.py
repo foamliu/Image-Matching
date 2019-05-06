@@ -7,7 +7,7 @@ from tqdm import tqdm
 from config import num_tests
 from match_feature import Recognition
 
-TEST_FILE = 'data/test_pairs.txt'
+TEST_FILE = 'data/test_pairs_rectified.txt'
 IMG_FOLDER = 'data/data/frame/cron20190326'
 
 
