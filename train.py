@@ -98,8 +98,8 @@ def train_net(args):
 
         # One epoch's validation
         val_acc, thres = test(model)
-        writer.add_scalar('Valid_Loss', val_acc, epoch)
-        writer.add_scalar('Valid_Top5_Accuracy', val_acc, epoch)
+        writer.add_scalar('DS326_Accuracy', val_acc, epoch)
+        writer.add_scalar('DS326_Threshold', thres, epoch)
 
         # Check if there was an improvement
         is_best = val_acc > best_acc
