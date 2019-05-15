@@ -4,7 +4,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # sets de
 print('device: ' + str(device))
 
 # Model parameters
-im_size = 224
+im_size = 112
 channel = 3
 
 # Training parameters
