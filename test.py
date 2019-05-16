@@ -15,6 +15,7 @@ from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
 test_file = 'data/test_pairs_rectified.txt'
+IMG_FOLDER = 'data/data/frame/cron20190326'
 
 
 def extract(filename):
@@ -188,7 +189,7 @@ def error_analysis(threshold):
 
 
 def copy_file(old, new):
-    old = os.path.join(IMG_DIR, old)
+    old = os.path.join(IMG_FOLDER, old)
     img = cv.imread(old)
     new_fn = os.path.join('images', new)
     cv.imwrite(new_fn, img)
