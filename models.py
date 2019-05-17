@@ -171,7 +171,7 @@ class ResNet(nn.Module):
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.bn2 = nn.BatchNorm2d(512)
         self.dropout = nn.Dropout()
-        self.fc = nn.Linear(512 * 7 * 7, 512)
+        self.fc = nn.Linear(512 * 14 * 14, 512)
         self.bn3 = nn.BatchNorm1d(512)
 
         for m in self.modules():
