@@ -46,7 +46,7 @@ $ python test.py
 ![image](https://github.com/foamliu/Image-Matching/raw/master/images/theta_dist.png)
 
 ##### False Positive
-37 false positives:
+34 false positives:
 
 小样图|上刊照|
 |---|---|
@@ -89,7 +89,7 @@ $ python test.py
 
 
 ##### False Negative
-8 false negative:
+12 false negative:
 
 1|2|1|2|
 |---|---|---|---|
