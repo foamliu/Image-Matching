@@ -84,11 +84,6 @@ $ python test.py
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/31_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/31_fp_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/32_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/32_fp_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/33_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/33_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/34_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/34_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/35_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/35_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/36_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/36_fp_1.jpg)|
-
-
 
 
 
@@ -106,3 +101,8 @@ $ python test.py
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/5_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/5_fn_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/6_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/6_fn_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/7_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/7_fn_1.jpg)|
+|![image](https://github.com/foamliu/Image-Matching/raw/master/images/8_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/8_fn_1.jpg)|
+|![image](https://github.com/foamliu/Image-Matching/raw/master/images/9_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/9_fn_1.jpg)|
+|![image](https://github.com/foamliu/Image-Matching/raw/master/images/10_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/10_fn_1.jpg)|
+|![image](https://github.com/foamliu/Image-Matching/raw/master/images/11_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/11_fn_1.jpg)|
+
