@@ -46,7 +46,7 @@ $ python test.py
 ![image](https://github.com/foamliu/Image-Matching/raw/master/images/theta_dist.png)
 
 ##### False Positive
-34 false positives:
+22 false positives:
 
 小样图|上刊照|
 |---|---|
@@ -72,37 +72,14 @@ $ python test.py
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/19_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/19_fp_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/20_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/20_fp_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/21_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/21_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/22_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/22_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/23_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/23_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/24_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/24_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/25_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/25_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/26_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/26_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/27_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/27_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/28_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/28_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/29_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/29_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/30_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/30_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/31_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/31_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/32_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/32_fp_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/33_fp_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/33_fp_1.jpg)|
-
 
 
 
 ##### False Negative
-12 false negative:
+3 false negative:
 
 1|2|1|2|
 |---|---|---|---|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/0_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/0_fn_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/1_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/1_fn_1.jpg)|
 |![image](https://github.com/foamliu/Image-Matching/raw/master/images/2_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/2_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/3_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/3_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/4_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/4_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/5_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/5_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/6_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/6_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/7_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/7_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/8_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/8_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/9_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/9_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/10_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/10_fn_1.jpg)|
-|![image](https://github.com/foamliu/Image-Matching/raw/master/images/11_fn_0.jpg)|![image](https://github.com/foamliu/Image-Matching/raw/master/images/11_fn_1.jpg)|
-
