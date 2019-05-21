@@ -5,13 +5,15 @@ import numpy as np
 import torch
 from tensorboardX import SummaryWriter
 from torch import nn
-from torch.optim.lr_scheduler import StepLR
 
 from config import device, grad_clip, print_freq
 from data_gen import FrameDataset
 from models import resnet18, resnet34, resnet50, resnet101, resnet152, resnet_face18, ArcMarginModel
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
+
+
+# from torch.optim.lr_scheduler import StepLR
 
 
 def full_log(epoch):
@@ -76,13 +78,14 @@ def train_net(args):
     criterion = nn.CrossEntropyLoss().to(device)
 
     # Custom dataloaders
-    train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True)
+    train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True,
+                                               num_workers=4)
 
-    scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
+    # scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
-        scheduler.step()
+        # scheduler.step()
 
         # One epoch's training
         train_loss, train_top5_accs = train(train_loader=train_loader,
