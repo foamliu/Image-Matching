@@ -109,6 +109,8 @@ def accuracy(threshold):
             if type == 1 and angle > threshold or type == 0 and angle <= threshold:
                 wrong += 1
 
+    print('num_tests: {}, wrong: {}.'.format(num_tests, wrong))
+
     accuracy = 1 - wrong / num_tests
     return accuracy
 
