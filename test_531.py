@@ -13,7 +13,7 @@ from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
 IMG_FOLDER = 'data/jinhai531'
-transformer = data_transforms('val')
+transformer = data_transforms['val']
 
 
 def extract(filename):
