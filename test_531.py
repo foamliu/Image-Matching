@@ -3,6 +3,7 @@ import math
 import os
 import pickle
 import tarfile
+import time
 
 import cv2 as cv
 import numpy as np
@@ -53,6 +54,7 @@ def gen_features(model):
     file_count = len(data)
 
     batch_size = 128
+    start = time.time()
 
     with torch.no_grad():
         for start_idx in tqdm(range(0, file_count, batch_size)):
@@ -70,6 +72,9 @@ def gen_features(model):
                 i = start_idx + idx
                 feature = features[idx]
                 data[i]['feature'] = feature
+
+    elapsed_time = time.time() - start
+    print('elapsed time(sec) per image: {}'.format(elapsed_time / file_count))
 
     with open(pickle_file, 'wb') as file:
         pickle.dump(data, file)
