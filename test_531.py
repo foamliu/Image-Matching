@@ -1,3 +1,4 @@
+import json
 import os
 import tarfile
 
@@ -6,11 +7,13 @@ import torch
 from PIL import Image
 from tqdm import tqdm
 
-from config import device, IMG_DIR
+from config import device
 from config import im_size
+from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
 IMG_FOLDER = 'data/jinhai531'
+transformer = data_transforms('val')
 
 
 def extract(filename):
@@ -18,9 +21,8 @@ def extract(filename):
         tar.extractall('data')
 
 
-def get_image(transformer, file):
-    file = os.path.join(IMG_DIR, file)
-    img = cv.imread(file)
+def get_image(filename):
+    img = cv.imread(filename)
     img = cv.resize(img, (im_size, im_size))
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
@@ -30,13 +32,16 @@ def get_image(transformer, file):
 
 
 def gen_features(model):
+    features = []
     dir_list = [d for d in os.listdir(IMG_FOLDER) if os.path.isdir(os.path.join(IMG_FOLDER, d))]
     for dir in tqdm(dir_list):
-        dir_path = os.path.isdir(os.path.join(IMG_FOLDER, dir))
-        file_list = [f for f in os.listdir(dir_path) if f.endwiths('.jpg')]
+        dir_path = os.path.join(IMG_FOLDER, dir)
+        file_list = [f for f in os.listdir(dir_path) if f.lower().endswith('.jpg')]
         for file in file_list:
-            print(file)
-
+            fullpath = os.path.join(dir_path, file)
+            features.append({'fullpath': fullpath, 'file': file, 'dir': dir})
+    with open('data/jinhai531_file_list.json', 'w') as file:
+        json.dump(features, file, ensure_ascii=False, indent=4)
 
 
 def evaluate(model):
