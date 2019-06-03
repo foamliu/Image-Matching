@@ -6,8 +6,10 @@ import tarfile
 
 import cv2 as cv
 import numpy as np
+import scipy.stats
 import torch
 from PIL import Image
+from matplotlib import pyplot as plt
 from tqdm import tqdm
 
 from config import device
@@ -74,45 +76,120 @@ def gen_features(model):
 
 
 def evaluate(model):
-    pass
-
-
-def get_threshold():
-    return 25.50393648495902
-
-
-def accuracy(threshold):
+    model.eval()
     with open(pickle_file, 'rb') as file:
         data = pickle.load(file)
 
-    num_tests = 0
-    wrong = 0
+    angles = []
 
     samples = [f for f in data if f['is_sample']]
     photos = [f for f in data if not f['is_sample']]
-    for sample in tqdm(samples):
-        feature0 = sample['feature']
-        x0 = feature0 / np.linalg.norm(feature0)
-        ad_no_0 = sample['dir']
-        for photo in photos:
-            feature1 = photo['feature']
-            x1 = feature1 / np.linalg.norm(feature1)
-            ad_no_1 = photo['dir']
-            cosine = np.dot(x0, x1)
-            cosine = np.clip(cosine, -1, 1)
-            theta = math.acos(cosine)
-            angle = theta * 180 / math.pi
 
-            type = int(ad_no_0 == ad_no_1)
+    with torch.no_grad():
+        for sample in tqdm(samples):
+            feature0 = sample['feature']
+            x0 = feature0 / np.linalg.norm(feature0)
+            ad_no_0 = sample['dir']
+            for photo in photos:
+                feature1 = photo['feature']
+                x1 = feature1 / np.linalg.norm(feature1)
+                ad_no_1 = photo['dir']
+                cosine = np.dot(x0, x1)
+                cosine = np.clip(cosine, -1, 1)
+                theta = math.acos(cosine)
+                theta = theta * 180 / math.pi
 
-            num_tests += 1
-            if type == 1 and angle > threshold or type == 0 and angle <= threshold:
-                wrong += 1
+                is_same = int(ad_no_0 == ad_no_1)
+                angles.append('{} {}\n'.format(theta, is_same))
 
-    print('num_tests: {}, wrong: {}.'.format(num_tests, wrong))
+    with open('data/angles.txt', 'w') as file:
+        file.writelines(angles)
+
+
+def get_threshold():
+    # return 25.50393648495902
+    with open(angles_file, 'r') as file:
+        lines = file.readlines()
+
+    data = []
+
+    for line in lines:
+        tokens = line.split()
+        angle = float(tokens[0])
+        type = int(tokens[1])
+        data.append({'angle': angle, 'type': type})
+
+    min_error = 6000
+    min_threshold = 0
+
+    for d in data:
+        threshold = d['angle']
+        type1 = len([s for s in data if s['angle'] <= threshold and s['type'] == 0])
+        type2 = len([s for s in data if s['angle'] > threshold and s['type'] == 1])
+        num_errors = type1 + type2
+        if num_errors < min_error:
+            min_error = num_errors
+            min_threshold = threshold
+
+    # print(min_error, min_threshold)
+    return min_threshold
+
+
+def accuracy(threshold):
+    with open(angles_file) as file:
+        lines = file.readlines()
+
+    num_tests = len(lines)
+    wrong = 0
+    for line in lines:
+        tokens = line.split()
+        angle = float(tokens[0])
+        type = int(tokens[1])
+        if type == 1 and angle > threshold or type == 0 and angle <= threshold:
+            wrong += 1
 
     accuracy = 1 - wrong / num_tests
     return accuracy
+
+
+def visualize(threshold):
+    with open(angles_file) as file:
+        lines = file.readlines()
+
+    ones = []
+    zeros = []
+
+    for line in lines:
+        tokens = line.split()
+        angle = float(tokens[0])
+        type = int(tokens[1])
+        if type == 1:
+            ones.append(angle)
+        else:
+            zeros.append(angle)
+
+    bins = np.linspace(0, 180, 181)
+
+    plt.hist(zeros, bins, density=True, alpha=0.5, label='0', facecolor='red')
+    plt.hist(ones, bins, density=True, alpha=0.5, label='1', facecolor='blue')
+
+    mu_0 = np.mean(zeros)
+    sigma_0 = np.std(zeros)
+    y_0 = scipy.stats.norm.pdf(bins, mu_0, sigma_0)
+    plt.plot(bins, y_0, 'r--')
+    mu_1 = np.mean(ones)
+    sigma_1 = np.std(ones)
+    y_1 = scipy.stats.norm.pdf(bins, mu_1, sigma_1)
+    plt.plot(bins, y_1, 'b--')
+    plt.xlabel('theta')
+    plt.ylabel('theta j Distribution')
+    plt.title(
+        r'Histogram : mu_0={:.4f},sigma_0={:.4f}, mu_1={:.4f},sigma_1={:.4f}'.format(mu_0, sigma_0, mu_1, sigma_1))
+
+    plt.legend(loc='upper right')
+    plt.plot([threshold, threshold], [0, 0.05], 'k-', lw=2)
+    plt.savefig('images/theta_dist.png')
+    plt.show()
 
 
 def test(model):
@@ -143,8 +220,8 @@ if __name__ == "__main__":
 
     acc, threshold = test(model)
 
-    # print('Visualizing {}...'.format(angles_file))
-    # visualize(threshold)
+    print('Visualizing {}...'.format(angles_file))
+    visualize(threshold)
     #
     # print('error analysis...')
     # error_analysis(threshold)
