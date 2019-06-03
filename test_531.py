@@ -1,5 +1,6 @@
 import json
 import os
+import pickle
 import tarfile
 
 import cv2 as cv
@@ -32,7 +33,7 @@ def get_image(filename):
 
 
 def gen_features(model):
-    features = []
+    files = []
     dir_list = [d for d in os.listdir(IMG_FOLDER) if os.path.isdir(os.path.join(IMG_FOLDER, d))]
     for dir in tqdm(dir_list):
         dir_path = os.path.join(IMG_FOLDER, dir)
@@ -40,9 +41,33 @@ def gen_features(model):
         for file in file_list:
             fullpath = os.path.join(dir_path, file)
             is_sample = file == '0.jpg'
-            features.append({'fullpath': fullpath, 'file': file, 'dir': dir, 'is_sample': is_sample})
+            files.append({'fullpath': fullpath, 'file': file, 'dir': dir, 'is_sample': is_sample})
     with open('data/jinhai531_file_list.json', 'w') as file:
-        json.dump(features, file, ensure_ascii=False, indent=4)
+        json.dump(files, file, ensure_ascii=False, indent=4)
+
+    file_count = len(files)
+
+    batch_size = 128
+
+    with torch.no_grad():
+        for start_idx in tqdm(range(0, file_count, batch_size)):
+            end_idx = min(file_count, start_idx + batch_size)
+            length = end_idx - start_idx
+
+            imgs = torch.zeros([length, 3, im_size, im_size], dtype=torch.float)
+            for idx in range(0, length):
+                i = start_idx + idx
+                filepath = files[i]['fullpath']
+                imgs[idx] = get_image(cv.imread(filepath, True), transformer)
+
+            features = model(imgs.to(device)).cpu().numpy()
+            for idx in range(0, length):
+                i = start_idx + idx
+                feature = features[idx]
+                files[i]['feature'] = feature
+
+    with open('data/jinhai531_features.pkl', 'wb') as file:
+        pickle.dump(files, file)
 
 
 def evaluate(model):
