@@ -58,7 +58,7 @@ def gen_features(model):
             for idx in range(0, length):
                 i = start_idx + idx
                 filepath = files[i]['fullpath']
-                imgs[idx] = get_image(cv.imread(filepath, True), transformer)
+                imgs[idx] = get_image(cv.imread(filepath, True))
 
             features = model(imgs.to(device)).cpu().numpy()
             for idx in range(0, length):
