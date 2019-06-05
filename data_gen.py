@@ -12,15 +12,11 @@ from config import IMG_DIR, im_size, pickle_file
 # Just normalization for validation
 data_transforms = {
     'train': transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.ColorJitter(hue=.05, saturation=.05),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomRotation(20, resample=Image.BILINEAR),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
     ]),
     'val': transforms.Compose([
-        transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
