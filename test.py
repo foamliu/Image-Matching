@@ -9,6 +9,7 @@ import numpy as np
 import scipy.stats
 from PIL import Image
 from matplotlib import pyplot as plt
+from tqdm import tqdm
 
 from config import im_size
 from config import num_tests, IMG_DIR
@@ -47,7 +48,7 @@ def evaluate(model):
 
     start = time.time()
     with torch.no_grad():
-        for line in lines:
+        for line in tqdm(lines):
             tokens = line.split()
             file0 = tokens[0]
             img0 = get_image(transformer, file0)
