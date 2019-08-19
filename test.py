@@ -1,3 +1,4 @@
+import argparse
 import math
 import os
 import tarfile
@@ -6,11 +7,11 @@ import time
 import cv2 as cv
 import numpy as np
 import scipy.stats
-import torch
 from PIL import Image
 from matplotlib import pyplot as plt
+
 from config import im_size
-from config import device, num_tests, IMG_DIR
+from config import num_tests, IMG_DIR
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
@@ -237,10 +238,25 @@ def test(model):
     return acc, thres
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Train face network')
+    # general
+    parser.add_argument('--gpu', type=bool, default=True, help='use gpu')
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == "__main__":
+    args = parse_args()
+
+    import torch
+
+    device = torch.device('cuda' if torch.cuda.is_available() and args.gpu else 'cpu')
+    print('using {}'.format(device))
+
     checkpoint = 'BEST_checkpoint.tar'
-    checkpoint = torch.load(checkpoint)
-    model = checkpoint['model']
+    checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
+    model = checkpoint['model'].module
     model = model.to(device)
     model.eval()
 
