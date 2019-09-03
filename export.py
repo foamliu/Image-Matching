@@ -13,6 +13,7 @@ if __name__ == '__main__':
     model = checkpoint['model'].module
     print(type(model))
     print('use_se: ' + str(model.use_se))
+    print('fc: ' + str(model.fc))
     # model.eval()
 
     filename = 'image-matching.pt'
