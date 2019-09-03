@@ -15,7 +15,7 @@ if __name__ == '__main__':
     print('use_se: ' + str(model.use_se))
     # model.eval()
 
-    filename = 'face-attributes.pt'
+    filename = 'image-matching.pt'
     torch.save(model.state_dict(), filename)
     start = time.time()
     torch.save(model.state_dict(), filename)
@@ -25,7 +25,7 @@ if __name__ == '__main__':
     class HParams:
         def __init__(self):
             self.pretrained = False
-            self.use_se = False
+            self.use_se = True
 
 
     config = HParams()
