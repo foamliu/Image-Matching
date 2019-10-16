@@ -215,7 +215,7 @@ def test(model):
 
 
 if __name__ == "__main__":
-    if not os.path.isdir('data/jinhai531'):
+    if not os.path.isdir('data/data'):
         extract('data/jinhai_531.tar.gz')
 
     checkpoint = 'BEST_checkpoint.tar'
