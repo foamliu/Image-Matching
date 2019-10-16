@@ -18,7 +18,7 @@ from config import im_size
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
-IMG_FOLDER = 'data/jinhai531'
+IMG_FOLDER = 'data/data'
 pickle_file = 'data/jinhai531_features.pkl'
 transformer = data_transforms['val']
 
