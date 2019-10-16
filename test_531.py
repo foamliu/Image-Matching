@@ -24,6 +24,7 @@ transformer = data_transforms['val']
 
 
 def extract(filename):
+    print('extracting {}...'.format(filename))
     with tarfile.open(filename, 'r') as tar:
         tar.extractall('data')
 
