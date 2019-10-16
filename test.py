@@ -54,7 +54,7 @@ def evaluate(model):
             img0 = get_image(transformer, file0)
             file1 = tokens[1]
             img1 = get_image(transformer, file1)
-            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float)
+            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float, device=device)
             imgs[0] = img0
             imgs[1] = img1
             output = model(imgs)
@@ -110,6 +110,12 @@ def visualize(threshold):
     plt.ylabel('theta j Distribution')
     plt.title(
         r'Histogram : mu_0={:.4f},sigma_0={:.4f}, mu_1={:.4f},sigma_1={:.4f}'.format(mu_0, sigma_0, mu_1, sigma_1))
+
+    print('threshold: ' + str(threshold))
+    print('mu_0: ' + str(mu_0))
+    print('sigma_0: ' + str(sigma_0))
+    print('mu_1: ' + str(mu_1))
+    print('sigma_1: ' + str(sigma_1))
 
     plt.legend(loc='upper right')
     plt.plot([threshold, threshold], [0, 0.05], 'k-', lw=2)
