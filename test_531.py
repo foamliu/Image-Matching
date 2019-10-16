@@ -68,7 +68,9 @@ def gen_features(model):
                 filepath = data[i]['fullpath']
                 imgs[idx] = get_image(filepath)
 
-            features = model(imgs.to(device)).cpu().numpy()
+            imgs = imgs.to(device)
+            features = model(imgs)
+            features = features.cpu().numpy()
             for idx in range(0, length):
                 i = start_idx + idx
                 feature = features[idx]
@@ -220,7 +222,7 @@ if __name__ == "__main__":
 
     checkpoint = 'BEST_checkpoint.tar'
     checkpoint = torch.load(checkpoint)
-    model = checkpoint['model']
+    model = checkpoint['model'].module
     model = model.to(device)
     model.eval()
 
