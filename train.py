@@ -3,9 +3,9 @@ from shutil import copyfile
 
 import numpy as np
 import torch
-from tensorboardX import SummaryWriter
 from torch import nn
 from torch.optim.lr_scheduler import StepLR
+from torch.utils.tensorboard import SummaryWriter
 
 from config import device, grad_clip, print_freq
 from data_gen import FrameDataset
