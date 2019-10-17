@@ -18,12 +18,13 @@ from config import im_size
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
-IMG_FOLDER = 'data/jinhai531'
+IMG_FOLDER = 'data/data'
 pickle_file = 'data/jinhai531_features.pkl'
 transformer = data_transforms['val']
 
 
 def extract(filename):
+    print('extracting {}...'.format(filename))
     with tarfile.open(filename, 'r') as tar:
         tar.extractall('data')
 
@@ -67,7 +68,9 @@ def gen_features(model):
                 filepath = data[i]['fullpath']
                 imgs[idx] = get_image(filepath)
 
-            features = model(imgs.to(device)).cpu().numpy()
+            imgs = imgs.to(device)
+            features = model(imgs)
+            features = features.cpu().numpy()
             for idx in range(0, length):
                 i = start_idx + idx
                 feature = features[idx]
@@ -214,12 +217,12 @@ def test(model):
 
 
 if __name__ == "__main__":
-    if not os.path.isdir('data/jinhai531'):
+    if not os.path.isdir('data/data'):
         extract('data/jinhai_531.tar.gz')
 
     checkpoint = 'BEST_checkpoint.tar'
     checkpoint = torch.load(checkpoint)
-    model = checkpoint['model']
+    model = checkpoint['model'].module
     model = model.to(device)
     model.eval()
 
