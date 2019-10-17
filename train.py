@@ -5,15 +5,14 @@ import numpy as np
 import torch
 from tensorboardX import SummaryWriter
 from torch import nn
+from torch.optim.lr_scheduler import StepLR
 
 from config import device, grad_clip, print_freq
 from data_gen import FrameDataset
-from models import resnet18, resnet34, resnet50, resnet101, resnet152, resnet_face18, ArcMarginModel
+from mobilenet_v2 import MobileNetV2
+from models import ArcMarginModel
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
-
-
-# from torch.optim.lr_scheduler import StepLR
 
 
 def full_log(epoch):
@@ -37,18 +36,7 @@ def train_net(args):
 
     # Initialize / load checkpoint
     if checkpoint is None:
-        if args.network == 'r18':
-            model = resnet18(args)
-        elif args.network == 'r34':
-            model = resnet34(args)
-        elif args.network == 'r50':
-            model = resnet50(args)
-        elif args.network == 'r101':
-            model = resnet101(args)
-        elif args.network == 'r152':
-            model = resnet152(args)
-        else:
-            model = resnet_face18(args.use_se)
+        model = MobileNetV2()
         model = nn.DataParallel(model)
         metric_fc = ArcMarginModel(args)
         metric_fc = nn.DataParallel(metric_fc)
@@ -81,11 +69,11 @@ def train_net(args):
     train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True,
                                                num_workers=4)
 
-    # scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
+    scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
-        # scheduler.step()
+        scheduler.step(epoch)
 
         # One epoch's training
         train_loss, train_top5_accs = train(train_loader=train_loader,
@@ -96,13 +84,13 @@ def train_net(args):
                                             epoch=epoch,
                                             logger=logger)
 
-        writer.add_scalar('Train_Loss', train_loss, epoch)
-        writer.add_scalar('Train_Top5_Accuracy', train_top5_accs, epoch)
+        writer.add_scalar('model/train_loss', train_loss, epoch)
+        writer.add_scalar('model/train_accuracy', train_top5_accs, epoch)
 
         # One epoch's validation
         val_acc, thres = test(model)
-        writer.add_scalar('DS326_Accuracy', val_acc, epoch)
-        writer.add_scalar('DS326_Threshold', thres, epoch)
+        writer.add_scalar('model/valid_accuracy', val_acc, epoch)
+        writer.add_scalar('model/valid_Threshold', thres, epoch)
 
         # Check if there was an improvement
         is_best = val_acc > best_acc
