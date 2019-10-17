@@ -3,10 +3,11 @@ import math
 import os
 import tarfile
 import time
-import torch
+
 import cv2 as cv
 import numpy as np
 import scipy.stats
+import torch
 from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
@@ -14,6 +15,9 @@ from tqdm import tqdm
 from config import im_size
 from config import num_tests, IMG_DIR
 from data_gen import data_transforms
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print('using {}'.format(device))
 
 angles_file = 'data/angles.txt'
 test_file = 'data/test_pairs_rectified.txt'
@@ -255,11 +259,6 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-
-    import torch
-
-    device = torch.device('cuda' if torch.cuda.is_available() and args.gpu else 'cpu')
-    print('using {}'.format(device))
 
     checkpoint = 'BEST_checkpoint.tar'
     checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
