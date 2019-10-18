@@ -4,7 +4,7 @@ from shutil import copyfile
 import numpy as np
 import torch
 from torch import nn
-# from torch.optim.lr_scheduler import StepLR
+from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.tensorboard import SummaryWriter
 
 from config import device, grad_clip, print_freq
@@ -69,12 +69,10 @@ def train_net(args):
     train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True,
                                                num_workers=4)
 
-    # scheduler = StepLR(optimizer, step_size=args.lr_step, gamma=0.1)
+    scheduler = MultiStepLR(optimizer, milestones=[30, 80], gamma=0.1)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
-        # scheduler.step(epoch)
-
         # One epoch's training
         train_loss, train_top5_accs = train(train_loader=train_loader,
                                             model=model,
@@ -87,10 +85,16 @@ def train_net(args):
         writer.add_scalar('model/train_loss', train_loss, epoch)
         writer.add_scalar('model/train_accuracy', train_top5_accs, epoch)
 
+        lr = optimizer.param_groups[0]['lr']
+        print('\nLearning rate: {}'.format(lr))
+        writer.add_scalar('model/learning_rate', lr, epoch)
+
         # One epoch's validation
         val_acc, thres = test(model)
         writer.add_scalar('model/valid_accuracy', val_acc, epoch)
-        writer.add_scalar('model/valid_Threshold', thres, epoch)
+        writer.add_scalar('model/valid_threshold', thres, epoch)
+
+        scheduler.step(epoch)
 
         # Check if there was an improvement
         is_best = val_acc > best_acc
