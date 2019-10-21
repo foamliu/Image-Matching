@@ -7,7 +7,7 @@ from torch import nn
 from config import num_workers
 from data_gen import FrameDataset
 from mobilenet_v2 import MobileNetV2
-from utils import AverageMeter
+from models import ArcMarginModel
 
 
 class bcolors:
@@ -19,6 +19,31 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+
+class AverageMeter(object):
+    """Computes and stores the average and current value"""
+
+    def __init__(self, name, fmt=':f'):
+        self.name = name
+        self.fmt = fmt
+        self.reset()
+
+    def reset(self):
+        self.val = 0
+        self.avg = 0
+        self.sum = 0
+        self.count = 0
+
+    def update(self, val, n=1):
+        self.val = val
+        self.sum += val * n
+        self.count += n
+        self.avg = self.sum / self.count
+
+    def __str__(self):
+        fmtstr = '{name} {val' + self.fmt + '} ({avg' + self.fmt + '})'
+        return fmtstr.format(**self.__dict__)
 
 
 def load_model(model_file):
@@ -46,7 +71,7 @@ def accuracy(output, target, topk=(1,)):
         return res
 
 
-def evaluate(model, criterion, data_loader, neval_batches):
+def evaluate(model, metric_fc, criterion, data_loader, neval_batches):
     model.eval()
     top1 = AverageMeter('Acc@1', ':6.2f')
     cnt = 0
@@ -54,8 +79,9 @@ def evaluate(model, criterion, data_loader, neval_batches):
     with torch.no_grad():
         for image, target in data_loader:
             start = time.time()
-            output = model(image)
+            feature = model(image)  # embedding => [N, 512]
             end = time.time()
+            output = metric_fc(feature, target)
             elapsed = elapsed + (end - start)
             # loss = criterion(output, target)
             cnt += 1
@@ -72,14 +98,11 @@ def evaluate(model, criterion, data_loader, neval_batches):
 def prepare_data_loaders():
     train_dataset = FrameDataset('train')
     print('num_train: {}'.format(len(train_dataset)))
-    valid_dataset = FrameDataset('valid')
-    print('num_valid: {}'.format(len(valid_dataset)))
 
-    data_loader = torch.utils.data.DataLoader(train_dataset, batch_size=30, shuffle=True,
+    data_loader = torch.utils.data.DataLoader(train_dataset, batch_size=30, shuffle=False,
                                               num_workers=num_workers)
-    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=30, shuffle=False,
-                                               num_workers=num_workers)
-    return data_loader, valid_loader
+
+    return data_loader, data_loader
 
 
 def train_one_epoch(model, criterion, optimizer, data_loader, device, ntrain_batches):
@@ -137,6 +160,10 @@ def print_size_of_model(model):
 
 
 def test():
+    filename = 'metric_fc.pt'
+    metric_fc = ArcMarginModel()
+    metric_fc.load_state_dict(torch.load(filename))
+
     train_batch_size = 30
     eval_batch_size = 30
 
@@ -166,7 +193,7 @@ def test():
     print("Size of baseline model")
     print_size_of_model(float_model)
 
-    top1 = evaluate(float_model, criterion, data_loader_test, neval_batches=num_eval_batches)
+    top1 = evaluate(float_model, metric_fc, criterion, data_loader_test, neval_batches=num_eval_batches)
     print('Evaluation accuracy on %d images, %2.2f' % (num_eval_batches * eval_batch_size, top1.avg))
     torch.jit.save(torch.jit.script(float_model), scripted_float_model_file)
 
@@ -192,7 +219,7 @@ def test():
 
     # Calibrate with the training set
     print('Calibrate with the training set')
-    evaluate(myModel, criterion, data_loader, neval_batches=num_calibration_batches)
+    evaluate(myModel, metric_fc, criterion, data_loader, neval_batches=num_calibration_batches)
     print('Post Training Quantization: Calibration done')
 
     # Convert to quantized model
@@ -204,7 +231,7 @@ def test():
     print("Size of model after quantization")
     print_size_of_model(myModel)
 
-    top1 = evaluate(myModel, criterion, data_loader_test, neval_batches=num_eval_batches)
+    top1 = evaluate(myModel, metric_fc, criterion, data_loader_test, neval_batches=num_eval_batches)
     print('Evaluation accuracy on %d images, %2.2f' % (num_eval_batches * eval_batch_size, top1.avg))
 
     per_channel_quantized_model = load_model(filename)
@@ -215,9 +242,9 @@ def test():
 
     torch.quantization.prepare(per_channel_quantized_model, inplace=True)
     print('Calibrate with the training set')
-    evaluate(per_channel_quantized_model, criterion, data_loader, num_calibration_batches)
+    evaluate(per_channel_quantized_model, metric_fc, criterion, data_loader, num_calibration_batches)
     torch.quantization.convert(per_channel_quantized_model, inplace=True)
-    top1 = evaluate(per_channel_quantized_model, criterion, data_loader_test, neval_batches=num_eval_batches)
+    top1 = evaluate(per_channel_quantized_model, metric_fc, criterion, data_loader_test, neval_batches=num_eval_batches)
     print('Evaluation accuracy on %d images, %2.2f' % (num_eval_batches * eval_batch_size, top1.avg))
     torch.jit.save(torch.jit.script(per_channel_quantized_model), scripted_quantized_model_file)
 
@@ -253,7 +280,7 @@ def test():
         # Check the accuracy after each epoch
         quantized_model = torch.quantization.convert(qat_model.eval(), inplace=False)
         quantized_model.eval()
-        top1 = evaluate(quantized_model, criterion, data_loader_test, neval_batches=num_eval_batches)
+        top1 = evaluate(quantized_model, metric_fc, criterion, data_loader_test, neval_batches=num_eval_batches)
         print('Epoch %d :Evaluation accuracy on %d images, %2.2f' % (
             nepoch, num_eval_batches * eval_batch_size, top1.avg))
 
