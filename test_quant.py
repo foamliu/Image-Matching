@@ -163,6 +163,8 @@ def test():
     filename = 'metric_fc.pt'
     metric_fc = ArcMarginModel()
     metric_fc.load_state_dict(torch.load(filename))
+    metric_fc = metric_fc.to('cpu')
+    metric_fc.eval()
 
     train_batch_size = 30
     eval_batch_size = 30
