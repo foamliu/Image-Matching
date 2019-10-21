@@ -216,7 +216,8 @@ def test(model):
     thres = get_threshold()
     # print('Calculating accuracy...')
     acc = accuracy(thres)
-    print('Accuracy: {}%, threshold: {}'.format(acc * 100, thres))
+    print('Accuracy: {}'.format(acc * 100))
+    print('Threshold: {}'.format(thres))
     return acc, thres
 
 
