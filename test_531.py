@@ -42,7 +42,7 @@ def get_image(filename):
 def gen_features(model):
     data = []
     dir_list = [d for d in os.listdir(IMG_FOLDER) if os.path.isdir(os.path.join(IMG_FOLDER, d))]
-    for dir in tqdm(dir_list):
+    for dir in dir_list:
         dir_path = os.path.join(IMG_FOLDER, dir)
         file_list = [f for f in os.listdir(dir_path) if f.lower().endswith('.jpg')]
         for file in file_list:
