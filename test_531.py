@@ -53,6 +53,7 @@ def gen_features(model):
         json.dump(data, file, ensure_ascii=False, indent=4)
 
     file_count = len(data)
+    print('file_count: ' + str(file_count))
 
     batch_size = 128
     elapsed = 0.0
