@@ -16,7 +16,7 @@ if __name__ == '__main__':
     print('fc: ' + str(model.fc))
     # model.eval()
 
-    filename = 'image-matching.pt'
+    filename = 'image_matching_mobile.pt'
     torch.save(model.state_dict(), filename)
     start = time.time()
     torch.save(model.state_dict(), filename)
