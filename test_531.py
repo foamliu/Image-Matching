@@ -55,7 +55,7 @@ def gen_features(model):
     file_count = len(data)
 
     batch_size = 128
-    start = time.time()
+    elapsed = 0.0
 
     with torch.no_grad():
         for start_idx in tqdm(range(0, file_count, batch_size)):
@@ -69,15 +69,18 @@ def gen_features(model):
                 imgs[idx] = get_image(filepath)
 
             imgs = imgs.to(device)
+            start = time.time()
             features = model(imgs)
+            end = time.time()
+            elapsed = elapsed + (end - start)
+
             features = features.cpu().numpy()
             for idx in range(0, length):
                 i = start_idx + idx
                 feature = features[idx]
                 data[i]['feature'] = feature
 
-    elapsed_time = time.time() - start
-    print('elapsed time(sec) per image: {}'.format(elapsed_time / file_count))
+    print('Elapsed: {} ms'.format(elapsed / file_count * 1000))
 
     with open(pickle_file, 'wb') as file:
         pickle.dump(data, file)
@@ -228,8 +231,8 @@ if __name__ == "__main__":
 
     acc, threshold = test(model)
 
-    print('Visualizing {}...'.format(angles_file))
-    visualize(threshold)
+    # print('Visualizing {}...'.format(angles_file))
+    # visualize(threshold)
     #
     # print('error analysis...')
     # error_analysis(threshold)
