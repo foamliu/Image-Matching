@@ -13,10 +13,10 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from config import device
 from config import im_size
 from data_gen import data_transforms
 
+device = torch.device('cpu')
 angles_file = 'data/angles.txt'
 IMG_FOLDER = 'data/data'
 pickle_file = 'data/jinhai531_features.pkl'
@@ -204,16 +204,16 @@ def visualize(threshold):
 
 
 def test(model):
-    print('Generating features...')
+    # print('Generating features...')
     gen_features(model)
 
-    print('Evaluating {}...'.format(angles_file))
+    # print('Evaluating {}...'.format(angles_file))
     # evaluate(model)
 
-    print('Calculating threshold...')
+    # print('Calculating threshold...')
     # threshold = 70.36
     thres = get_threshold()
-    print('Calculating accuracy...')
+    # print('Calculating accuracy...')
     acc = accuracy(thres)
     print('Accuracy: {}%, threshold: {}'.format(acc * 100, thres))
     return acc, thres
