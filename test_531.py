@@ -229,9 +229,9 @@ if __name__ == "__main__":
     # checkpoint = torch.load(checkpoint)
     # model = checkpoint['model'].module
     # model = model.to(device)
-    
-    scripted_float_model_file = 'mobilenet_quantization_scripted.pth'
-    model = torch.jit.load(scripted_float_model_file)
+
+    scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
+    model = torch.jit.load(scripted_quantized_model_file)
     model = model.to('cpu')
 
     model.eval()
