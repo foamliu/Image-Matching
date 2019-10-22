@@ -225,10 +225,15 @@ if __name__ == "__main__":
     if not os.path.isdir('data/data'):
         extract('data/jinhai_531.tar.gz')
 
-    checkpoint = 'BEST_checkpoint.tar'
-    checkpoint = torch.load(checkpoint)
-    model = checkpoint['model'].module
-    model = model.to(device)
+    # checkpoint = 'BEST_checkpoint.tar'
+    # checkpoint = torch.load(checkpoint)
+    # model = checkpoint['model'].module
+    # model = model.to(device)
+    
+    scripted_float_model_file = 'mobilenet_quantization_scripted.pth'
+    model = torch.jit.load(scripted_float_model_file)
+    model = model.to('cpu')
+
     model.eval()
 
     acc, threshold = test(model)
