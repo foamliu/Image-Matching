@@ -230,8 +230,21 @@ if __name__ == "__main__":
     # model = checkpoint['model'].module
     # model = model.to(device)
 
-    scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
-    model = torch.jit.load(scripted_quantized_model_file)
+    filename = 'image-matching.pt'
+    from models import resnet50
+
+
+    class HParams:
+        def __init__(self):
+            self.pretrained = False
+            self.use_se = True
+
+
+    config = HParams()
+
+    print('loading {}...'.format(filename))
+    start = time.time()
+    model = resnet50(config)
     model = model.to('cpu')
 
     model.eval()
