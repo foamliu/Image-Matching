@@ -230,19 +230,19 @@ if __name__ == "__main__":
     # model = checkpoint['model'].module
     # model = model.to(device)
 
-    filename = 'image-matching.pt'
-    from models import resnet50
+    # filename = 'image-matching.pt'
+    # from models import resnet50
 
+    #
+    # class HParams:
+    #     def __init__(self):
+    #         self.pretrained = False
+    #         self.use_se = True
+    #
+    # config = HParams()
 
-    class HParams:
-        def __init__(self):
-            self.pretrained = False
-            self.use_se = True
-
-    config = HParams()
-
-    print('loading {}...'.format(filename))
-    start = time.time()
+    # print('loading {}...'.format(filename))
+    # start = time.time()
     # model = resnet50(config)
     # model.load_state_dict(torch.load(filename))
 
