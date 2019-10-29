@@ -243,8 +243,11 @@ if __name__ == "__main__":
 
     print('loading {}...'.format(filename))
     start = time.time()
-    model = resnet50(config)
-    model.load_state_dict(torch.load(filename))
+    # model = resnet50(config)
+    # model.load_state_dict(torch.load(filename))
+
+    scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
+    model = torch.jit.load(scripted_quantized_model_file)
     model = model.to('cpu')
 
     model.eval()
