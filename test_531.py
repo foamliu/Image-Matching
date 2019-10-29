@@ -209,7 +209,7 @@ def test(model):
     gen_features(model)
 
     # print('Evaluating {}...'.format(angles_file))
-    # evaluate(model)
+    evaluate(model)
 
     # print('Calculating threshold...')
     # threshold = 70.36
