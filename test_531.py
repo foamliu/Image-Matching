@@ -239,12 +239,12 @@ if __name__ == "__main__":
             self.pretrained = False
             self.use_se = True
 
-
     config = HParams()
 
     print('loading {}...'.format(filename))
     start = time.time()
     model = resnet50(config)
+    model.load_state_dict(torch.load(filename))
     model = model.to('cpu')
 
     model.eval()
