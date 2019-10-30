@@ -265,6 +265,7 @@ if __name__ == "__main__":
     model = checkpoint['model'].module
     model = model.to(device)
     model.eval()
+    print(model)
 
     acc, threshold = test(model)
 
