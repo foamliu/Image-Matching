@@ -24,8 +24,6 @@ def test():
         imagepath2 = os.path.join(IMG_FOLDER, tokens[1])
         type = int(tokens[2])
 
-        print('imagepath1: ' + imagepath1)
-        print('imagepath2: ' + imagepath2)
         image1 = cv2.imread(imagepath1)
         image1 = cv2.resize(image1, (720, 960))
         image2 = cv2.imread(imagepath2)
