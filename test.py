@@ -16,9 +16,6 @@ from config import im_size
 from config import num_tests, IMG_DIR
 from data_gen import data_transforms
 
-device = torch.device('cpu')
-print('test with {}'.format(device))
-
 angles_file = 'data/angles.txt'
 test_file = 'data/test_pairs_rectified.txt'
 IMG_FOLDER = 'data/data/frame/cron20190326'
@@ -259,6 +256,8 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+    device = torch.device('cpu')
+    print('test with {}'.format(device))
 
     checkpoint = 'BEST_checkpoint.tar'
     checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
