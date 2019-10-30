@@ -33,8 +33,7 @@ def get_image(transformer, file):
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
     img = transformer(img)
-    device = torch.device('cpu')
-    img = img.to(device)
+    # img = img.to(device)
     return img
 
 
