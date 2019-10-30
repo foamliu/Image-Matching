@@ -17,7 +17,7 @@ from config import num_tests, IMG_DIR
 from data_gen import data_transforms
 
 device = torch.device('cpu')
-print('using {}'.format(device))
+print('test with {}'.format(device))
 
 angles_file = 'data/angles.txt'
 test_file = 'data/test_pairs_rectified.txt'
