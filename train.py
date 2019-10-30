@@ -1,4 +1,5 @@
 import os
+import warnings
 from shutil import copyfile
 
 import numpy as np
@@ -13,6 +14,8 @@ from mobilenet_v2 import MobileNetV2
 from models import ArcMarginModel
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def full_log(epoch):
