@@ -55,7 +55,7 @@ def evaluate(model):
             img0 = get_image(transformer, file0)
             file1 = tokens[1]
             img1 = get_image(transformer, file1)
-            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float, device=device)
+            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float)
             imgs[0] = img0
             imgs[1] = img1
             output = model(imgs)
