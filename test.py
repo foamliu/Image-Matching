@@ -16,7 +16,7 @@ from config import im_size
 from config import num_tests, IMG_DIR
 from data_gen import data_transforms
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cpu')
 print('using {}'.format(device))
 
 angles_file = 'data/angles.txt'
