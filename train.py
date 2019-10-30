@@ -15,6 +15,7 @@ from models import ArcMarginModel
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
 
+print('train with {}'.format(device))
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
