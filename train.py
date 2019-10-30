@@ -37,6 +37,7 @@ def train_net(args):
     # Initialize / load checkpoint
     if checkpoint is None:
         model = MobileNetV2()
+        model.fuse_model()
         model = nn.DataParallel(model)
         metric_fc = ArcMarginModel(args)
         metric_fc = nn.DataParallel(metric_fc)
