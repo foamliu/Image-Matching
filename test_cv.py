@@ -8,7 +8,7 @@ from config import num_tests
 from match_feature import Recognition
 
 TEST_FILE = 'data/test_pairs_rectified.txt'
-IMG_FOLDER = 'data/data/'
+IMG_FOLDER = 'data/data/frame/cron20190326/'
 
 
 def test():
