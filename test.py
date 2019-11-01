@@ -270,7 +270,7 @@ if __name__ == "__main__":
     model = torch.jit.load(scripted_quantized_model_file)
     model = model.to(device)
     model.eval()
-    print(model)
+    # print(model)
 
     acc, threshold = test(model)
 
