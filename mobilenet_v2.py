@@ -5,7 +5,7 @@ from torch import nn
 from torch.quantization import QuantStub, DeQuantStub
 from torchsummary import summary
 
-from config import device, emb_size
+from config import device
 
 
 def _make_divisible(v, divisor, min_value=None):
@@ -71,7 +71,7 @@ class InvertedResidual(nn.Module):
 
 
 class MobileNetV2(nn.Module):
-    def __init__(self, num_classes=1000, width_mult=1.0, inverted_residual_setting=None, round_nearest=8):
+    def __init__(self, width_mult=1.0, inverted_residual_setting=None, round_nearest=8):
         """
         MobileNet V2 main class
 
@@ -124,7 +124,7 @@ class MobileNetV2(nn.Module):
         # building classifier
         self.classifier = nn.Sequential(
             nn.Dropout(0.2),
-            nn.Linear(self.last_channel, emb_size),
+            nn.Linear(self.last_channel, 512),
             nn.BatchNorm1d(512)
         )
 
