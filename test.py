@@ -275,7 +275,7 @@ if __name__ == "__main__":
         def __init__(self):
             self.pretrained = False
             self.use_se = True
-    filename = 'image_matching.pt'
+    filename = 'image-matching.pt'
     from models import resnet50
     model = resnet50(HParams())
     model.load_state_dict(torch.load(filename))
