@@ -47,7 +47,7 @@ def evaluate(model):
 
     angles = []
 
-    start = time.time()
+    elapsed = 0.0
     with torch.no_grad():
         for line in tqdm(lines):
             tokens = line.split()
@@ -58,7 +58,11 @@ def evaluate(model):
             imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float)
             imgs[0] = img0
             imgs[1] = img1
+
+            start = time.time()
             output = model(imgs)
+            end = time.time()
+            elapsed += (end - start)
 
             feature0 = output[0].cpu().numpy()
             feature1 = output[1].cpu().numpy()
@@ -71,8 +75,8 @@ def evaluate(model):
             is_same = tokens[2]
             angles.append('{} {} {} {} \n'.format(theta, is_same, file0, file1))
 
-    elapsed_time = time.time() - start
-    print('elapsed time(sec) per image: {}'.format(elapsed_time / (num_tests * 2)))
+    elapsed_time = elapsed / (num_tests * 2) * 1000
+    print('elapsed time per image: {} ms'.format(elapsed_time))
 
     with open('data/angles.txt', 'w') as file:
         file.writelines(angles)
