@@ -7,7 +7,7 @@ from torch.nn import Parameter
 from torchscope import scope
 from torchvision import models
 
-from config import num_classes
+from config import device, num_classes
 
 
 class Flatten(nn.Module):
@@ -88,7 +88,5 @@ class ArcMarginModel(nn.Module):
 
 
 if __name__ == "__main__":
-    from config import device
-
     model = MatchMobile()
     scope(model, input_size=(3, 224, 224))
