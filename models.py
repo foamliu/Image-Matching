@@ -48,7 +48,6 @@ class MatchMobile(nn.Module):
                                    Flatten(),
                                    # nn.Linear(1280, 512),
                                    )
-        self.output = nn.Sigmoid()
 
     def forward(self, input):
         return self.model(input)
