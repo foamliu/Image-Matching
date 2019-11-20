@@ -90,5 +90,5 @@ class ArcMarginModel(nn.Module):
 if __name__ == "__main__":
     from config import device
 
-    model = MatchMobile().to(device)
+    model = MatchMobile()
     scope(model, input_size=(3, 224, 224))
