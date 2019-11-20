@@ -20,6 +20,8 @@ if __name__ == '__main__':
     torch.save(model.state_dict(), filename)
     print('elapsed {} sec'.format(time.time() - start))
 
+    print(model)
+
     print('loading {}...'.format(filename))
     start = time.time()
     model = MobileNetV2()

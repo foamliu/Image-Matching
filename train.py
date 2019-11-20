@@ -1,4 +1,5 @@
 import os
+import warnings
 from shutil import copyfile
 
 import numpy as np
@@ -13,6 +14,9 @@ from mobilenet_v2 import MobileNetV2
 from models import ArcMarginModel
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
+
+print('train with {}'.format(device))
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def full_log(epoch):
@@ -69,7 +73,7 @@ def train_net(args):
     train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True,
                                                num_workers=4)
 
-    scheduler = MultiStepLR(optimizer, milestones=[30, 80], gamma=0.1)
+    scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30, 40], gamma=0.1)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
@@ -124,7 +128,7 @@ def train(train_loader, model, metric_fc, criterion, optimizer, epoch, logger):
 
         # Forward prop.
         feature = model(img)  # embedding => [N, 512]
-        output = metric_fc(feature, label)  # class_id_out => [N, 10575]
+        output = metric_fc(feature, label)  # class_id_out => [N, 9935]
 
         # Calculate loss
         loss = criterion(output, label)

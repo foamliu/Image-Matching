@@ -119,6 +119,7 @@ def evaluate(model):
 
 
 def get_threshold():
+    print('get threshold...')
     # return 25.50393648495902
     with open(angles_file, 'r') as file:
         lines = file.readlines()
@@ -134,7 +135,7 @@ def get_threshold():
     min_error = 6000
     min_threshold = 0
 
-    for d in data:
+    for d in tqdm(data):
         threshold = d['angle']
         type1 = len([s for s in data if s['angle'] <= threshold and s['type'] == 0])
         type2 = len([s for s in data if s['angle'] > threshold and s['type'] == 1])
@@ -206,7 +207,7 @@ def visualize(threshold):
 
 def test(model):
     # print('Generating features...')
-    gen_features(model)
+    # gen_features(model)
 
     # print('Evaluating {}...'.format(angles_file))
     # evaluate(model)
@@ -214,6 +215,7 @@ def test(model):
     # print('Calculating threshold...')
     # threshold = 70.36
     thres = get_threshold()
+    print(thres)
     # print('Calculating accuracy...')
     acc = accuracy(thres)
     print('Accuracy: {}'.format(acc * 100))
@@ -222,13 +224,34 @@ def test(model):
 
 
 if __name__ == "__main__":
-    if not os.path.isdir('data/data'):
-        extract('data/jinhai_531.tar.gz')
+    # if not os.path.isdir('data/data'):
+    #     extract('data/jinhai_531.tar.gz')
 
-    checkpoint = 'BEST_checkpoint.tar'
-    checkpoint = torch.load(checkpoint)
-    model = checkpoint['model'].module
-    model = model.to(device)
+    # checkpoint = 'BEST_checkpoint.tar'
+    # checkpoint = torch.load(checkpoint)
+    # model = checkpoint['model'].module
+    # model = model.to(device)
+
+    # filename = 'image-matching.pt'
+    # from models import resnet50
+
+    #
+    # class HParams:
+    #     def __init__(self):
+    #         self.pretrained = False
+    #         self.use_se = True
+    #
+    # config = HParams()
+
+    # print('loading {}...'.format(filename))
+    # start = time.time()
+    # model = resnet50(config)
+    # model.load_state_dict(torch.load(filename))
+
+    scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
+    model = torch.jit.load(scripted_quantized_model_file)
+    model = model.to('cpu')
+
     model.eval()
 
     acc, threshold = test(model)

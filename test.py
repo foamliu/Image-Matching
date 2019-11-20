@@ -16,9 +16,6 @@ from config import im_size
 from config import num_tests, IMG_DIR
 from data_gen import data_transforms
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-print('using {}'.format(device))
-
 angles_file = 'data/angles.txt'
 test_file = 'data/test_pairs_rectified.txt'
 IMG_FOLDER = 'data/data/frame/cron20190326'
@@ -36,7 +33,7 @@ def get_image(transformer, file):
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
     img = transformer(img)
-    img = img.to(device)
+    # img = img.to(device)
     return img
 
 
@@ -50,7 +47,7 @@ def evaluate(model):
 
     angles = []
 
-    start = time.time()
+    elapsed = 0.0
     with torch.no_grad():
         for line in tqdm(lines):
             tokens = line.split()
@@ -58,10 +55,14 @@ def evaluate(model):
             img0 = get_image(transformer, file0)
             file1 = tokens[1]
             img1 = get_image(transformer, file1)
-            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float, device=device)
+            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float)
             imgs[0] = img0
             imgs[1] = img1
+
+            start = time.time()
             output = model(imgs)
+            end = time.time()
+            elapsed += (end - start)
 
             feature0 = output[0].cpu().numpy()
             feature1 = output[1].cpu().numpy()
@@ -74,8 +75,8 @@ def evaluate(model):
             is_same = tokens[2]
             angles.append('{} {} {} {} \n'.format(theta, is_same, file0, file1))
 
-    elapsed_time = time.time() - start
-    print('elapsed time(sec) per image: {}'.format(elapsed_time / (num_tests * 2)))
+    elapsed_time = elapsed / (num_tests * 2) * 1000
+    print('elapsed time per image: {} ms'.format(elapsed_time))
 
     with open('data/angles.txt', 'w') as file:
         file.writelines(angles)
@@ -259,12 +260,35 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
+    device = torch.device('cpu')
+    print('test with {}'.format(device))
 
-    checkpoint = 'BEST_checkpoint.tar'
-    checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
-    model = checkpoint['model'].module
+    # checkpoint = 'BEST_checkpoint.tar'
+    # checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
+    # model = checkpoint['model'].module
+
+    # filename = 'image_matching_mobile.pt'
+    # model = MobileNetV2()
+    # model.load_state_dict(torch.load(filename))
+
+    class HParams:
+        def __init__(self):
+            self.pretrained = False
+            self.use_se = True
+    filename = 'image-matching.pt'
+    from models import resnet50
+    model = resnet50(HParams())
+    model.load_state_dict(torch.load(filename))
+
+    # scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
+    # model = torch.jit.load(scripted_quantized_model_file)
+
+    # scripted_float_model_file = 'mobilenet_quantization_scripted.pth'
+    # model = torch.jit.load(scripted_float_model_file)
+
     model = model.to(device)
     model.eval()
+    print(model)
 
     acc, threshold = test(model)
 
