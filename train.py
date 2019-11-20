@@ -6,9 +6,10 @@ from torch import nn
 from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.tensorboard import SummaryWriter
 
-from config import device, grad_clip, print_freq
+from config import device, grad_clip, print_freq, num_workers
 from data_gen import FrameDataset
-from mobilenet_v2 import MobileNetV2
+# from mobilenet_v2 import MobileNetV2
+from models import MatchMobile
 from models import ArcMarginModel
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
@@ -28,7 +29,7 @@ def train_net(args):
 
     # Initialize / load checkpoint
     if checkpoint is None:
-        model = MobileNetV2()
+        model = MatchMobile()
         model = nn.DataParallel(model)
         metric_fc = ArcMarginModel(args)
         metric_fc = nn.DataParallel(metric_fc)
@@ -59,7 +60,7 @@ def train_net(args):
 
     # Custom dataloaders
     train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True,
-                                               num_workers=4)
+                                               num_workers=num_workers)
 
     scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30, 40], gamma=0.1)
 
