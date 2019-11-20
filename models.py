@@ -17,15 +17,24 @@ class Flatten(nn.Module):
 
 
 class DepthwiseSeparableConv(nn.Module):
-    def __init__(self, nin, nout, kernel_size, padding, bias=False):
+    def __init__(self, in_planes, out_planes, kernel_size, padding, bias=False):
         super(DepthwiseSeparableConv, self).__init__()
-        self.depthwise = nn.Conv2d(nin, nin, kernel_size=kernel_size, padding=padding, groups=nin, bias=bias)
-        self.pointwise = nn.Conv2d(nin, nout, kernel_size=1, bias=bias)
+        self.depthwise = nn.Conv2d(in_planes, in_planes, kernel_size=kernel_size, padding=padding, groups=in_planes,
+                                   bias=bias)
+        self.pointwise = nn.Conv2d(in_planes, out_planes, kernel_size=1, bias=bias)
+        self.bn1 = nn.BatchNorm2d(in_planes)
+        self.bn2 = nn.BatchNorm2d(out_planes)
+        self.relu = nn.ReLU()
 
     def forward(self, x):
-        out = self.depthwise(x)
-        out = self.pointwise(out)
-        return out
+        x = self.depthwise(x)
+        x = self.bn1(x)
+        x = self.relu(x)
+
+        x = self.pointwise(x)
+        x = self.bn2(x)
+        x = self.relu(x)
+        return x
 
 
 class MatchMobile(nn.Module):
@@ -35,21 +44,14 @@ class MatchMobile(nn.Module):
         # Remove linear layer
         modules = list(mobilenet.children())[:-1]
         self.model = nn.Sequential(*modules,
-                                   DepthwiseSeparableConv(1280, 1280, kernel_size=7, padding=0),
+                                   DepthwiseSeparableConv(1280, 512, kernel_size=7, padding=0),
                                    Flatten(),
-                                   nn.Linear(1280, 512),
+                                   # nn.Linear(1280, 512),
                                    )
         self.output = nn.Sigmoid()
 
-    def forward(self, input1, input2):
-        s1 = self.model(input1)
-        s2 = self.model(input2)
-        prob = self.output(s1 - s2)
-        return prob
-
-    def predict(self, input):
-        s = self.model(input)
-        return self.output(s)
+    def forward(self, input):
+        return self.model(input)
 
 
 class ArcMarginModel(nn.Module):
