@@ -33,7 +33,7 @@ class DepthwiseSeparableConv(nn.Module):
 
         x = self.pointwise(x)
         x = self.bn2(x)
-        x = self.relu(x)
+        # x = self.relu(x)
         return x
 
 
@@ -91,4 +91,4 @@ if __name__ == "__main__":
     from config import device
 
     model = MatchMobile().to(device)
-    scope(model, input_size=[(3, 224, 224)])
+    scope(model, input_size=(3, 224, 224))
