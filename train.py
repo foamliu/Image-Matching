@@ -1,6 +1,4 @@
-import os
 import warnings
-from shutil import copyfile
 
 import numpy as np
 import torch
@@ -17,16 +15,6 @@ from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accu
 
 print('train with {}'.format(device))
 warnings.simplefilter(action='ignore', category=FutureWarning)
-
-
-def full_log(epoch):
-    full_log_dir = 'data/full_log'
-    if not os.path.isdir(full_log_dir):
-        os.mkdir(full_log_dir)
-    filename = 'angles_{}.txt'.format(epoch)
-    dst_file = os.path.join(full_log_dir, filename)
-    src_file = 'data/angles.txt'
-    copyfile(src_file, dst_file)
 
 
 def train_net(args):

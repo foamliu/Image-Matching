@@ -4,7 +4,7 @@ from multiprocessing import Pool
 import cv2 as cv
 from tqdm import tqdm
 
-im_size = 224
+im_size = 256
 
 new_folder = 'data/cron20190326_resized'
 old_folder = 'data/data/frame/cron20190326'
