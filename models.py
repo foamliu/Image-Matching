@@ -10,30 +10,26 @@ from torchvision import models
 from config import device, num_classes
 
 
-class Flatten(nn.Module):
-    def forward(self, x):
-        batch_size = x.shape[0]
-        return x.view(batch_size, -1)
+class ConvBNReLU(nn.Sequential):
+    def __init__(self, in_planes, out_planes, kernel_size=3, stride=1, groups=1):
+        padding = (kernel_size - 1) // 2
+        super(ConvBNReLU, self).__init__(
+            nn.Conv2d(in_planes, out_planes, kernel_size, stride, padding, groups=groups, bias=False),
+            nn.BatchNorm2d(out_planes),
+            nn.ReLU6(inplace=True)
+        )
 
 
-class DepthwiseSeparableConv(nn.Module):
+class GDConv(nn.Module):
     def __init__(self, in_planes, out_planes, kernel_size, padding, bias=False):
-        super(DepthwiseSeparableConv, self).__init__()
-        self.depthwise = nn.Conv2d(in_planes, in_planes, kernel_size=kernel_size, padding=padding, groups=in_planes,
+        super(GDConv, self).__init__()
+        self.depthwise = nn.Conv2d(in_planes, out_planes, kernel_size=kernel_size, padding=padding, groups=in_planes,
                                    bias=bias)
-        self.pointwise = nn.Conv2d(in_planes, out_planes, kernel_size=1, bias=bias)
-        self.bn1 = nn.BatchNorm2d(in_planes)
-        self.bn2 = nn.BatchNorm2d(out_planes)
-        self.relu = nn.ReLU()
+        self.bn = nn.BatchNorm2d(in_planes)
 
     def forward(self, x):
         x = self.depthwise(x)
-        x = self.bn1(x)
-        x = self.relu(x)
-
-        x = self.pointwise(x)
-        x = self.bn2(x)
-        # x = self.relu(x)
+        x = self.bn(x)
         return x
 
 
@@ -43,14 +39,26 @@ class MatchMobile(nn.Module):
         mobilenet = models.mobilenet_v2(pretrained=True)
         # Remove linear layer
         modules = list(mobilenet.children())[:-1]
-        self.model = nn.Sequential(*modules,
-                                   DepthwiseSeparableConv(1280, 512, kernel_size=7, padding=0),
-                                   Flatten(),
-                                   # nn.Linear(1280, 512),
-                                   )
+        self.features = nn.Sequential(*modules,
+                                      ConvBNReLU(1280, 512, kernel_size=1),
+                                      GDConv(in_planes=512, out_planes=512, kernel_size=7, padding=0),
+                                      nn.Conv2d(512, 128, kernel_size=1),
+                                      nn.BatchNorm2d(128),
+                                      )
+        # building last several layers
+        self.conv1 = ConvBNReLU(1280, 512, kernel_size=1)
+        self.gdconv = GDConv(in_planes=512, out_planes=512, kernel_size=7, padding=0)
+        self.conv2 = nn.Conv2d(512, 128, kernel_size=1)
+        self.bn = nn.BatchNorm2d(128)
 
-    def forward(self, input):
-        return self.model(input)
+    def forward(self, x):
+        x = self.features(x)
+        x = self.conv1(x)
+        x = self.gdconv(x)
+        x = self.conv2(x)
+        x = self.bn(x)
+        x = x.view(x.size(0), -1)
+        return x
 
 
 class ArcMarginModel(nn.Module):

@@ -8,13 +8,11 @@ from torch.utils.tensorboard import SummaryWriter
 
 from config import device, grad_clip, print_freq, num_workers
 from data_gen import FrameDataset
-# from mobilenet_v2 import MobileNetV2
-from models import MatchMobile
 from models import ArcMarginModel
+from models import MatchMobile
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
 
-print('train with {}'.format(device))
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
@@ -34,12 +32,13 @@ def train_net(args):
         metric_fc = ArcMarginModel(args)
         metric_fc = nn.DataParallel(metric_fc)
 
-        if args.optimizer == 'sgd':
-            optimizer = torch.optim.SGD([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
-                                        lr=args.lr, momentum=args.mom, weight_decay=args.weight_decay, nesterov=True)
-        else:
-            optimizer = torch.optim.Adam([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
-                                         lr=args.lr, weight_decay=args.weight_decay)
+        optimizer = torch.optim.SGD([{'params': model.features.parameters()},
+                                     {'params': model.conv1.parameters()},
+                                     {'params': model.gdconv.parameters()},
+                                     {'params': model.conv2.parameters(), 'weight_decay': 4e-4},
+                                     {'params': model.bn.parameters()},
+                                     {'params': metric_fc.parameters()}],
+                                    lr=args.lr, momentum=args.mom, weight_decay=args.weight_decay, nesterov=True)
 
     else:
         checkpoint = torch.load(checkpoint)
