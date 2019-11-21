@@ -5,7 +5,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')  # sets de
 # Model parameters
 im_size = 224
 channel = 3
-emb_size = 512
+emb_size = 128
 
 # Training parameters
 num_workers = 1  # for data-loading; right now, only 1 works with h5py
