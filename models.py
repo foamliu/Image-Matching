@@ -7,7 +7,7 @@ from torch.nn import Parameter
 from torchscope import scope
 from torchvision import models
 
-from config import device, num_classes
+from config import device, num_classes, emb_size
 
 
 class ConvBNReLU(nn.Sequential):
@@ -72,7 +72,7 @@ class ArcMarginModel(nn.Module):
     def __init__(self, args):
         super(ArcMarginModel, self).__init__()
 
-        self.weight = Parameter(torch.FloatTensor(num_classes, args.emb_size))
+        self.weight = Parameter(torch.FloatTensor(num_classes, emb_size))
         nn.init.xavier_uniform_(self.weight)
 
         self.easy_margin = args.easy_margin
