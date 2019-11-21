@@ -28,9 +28,7 @@ def train_net(args):
     # Initialize / load checkpoint
     if checkpoint is None:
         model = MatchMobile()
-        model = nn.DataParallel(model)
         metric_fc = ArcMarginModel(args)
-        metric_fc = nn.DataParallel(metric_fc)
 
         optimizer = torch.optim.SGD([{'params': model.features.parameters()},
                                      {'params': model.conv1.parameters()},
@@ -39,6 +37,9 @@ def train_net(args):
                                      {'params': model.bn.parameters()},
                                      {'params': metric_fc.parameters()}],
                                     lr=args.lr, momentum=args.mom, weight_decay=args.weight_decay, nesterov=True)
+
+        model = nn.DataParallel(model)
+        metric_fc = nn.DataParallel(metric_fc)
 
     else:
         checkpoint = torch.load(checkpoint)
