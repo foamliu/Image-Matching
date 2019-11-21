@@ -39,17 +39,24 @@ class MatchMobile(nn.Module):
         mobilenet = models.mobilenet_v2(pretrained=True)
         # Remove linear layer
         modules = list(mobilenet.children())[:-1]
-        self.features = nn.Sequential(*modules,
-                                      ConvBNReLU(1280, 512, kernel_size=1),
-                                      GDConv(in_planes=512, out_planes=512, kernel_size=7, padding=0),
-                                      nn.Conv2d(512, 128, kernel_size=1),
-                                      nn.BatchNorm2d(128),
-                                      )
+        self.features = nn.Sequential(*modules)
         # building last several layers
         self.conv1 = ConvBNReLU(1280, 512, kernel_size=1)
         self.gdconv = GDConv(in_planes=512, out_planes=512, kernel_size=7, padding=0)
         self.conv2 = nn.Conv2d(512, 128, kernel_size=1)
         self.bn = nn.BatchNorm2d(128)
+
+        net = nn.Sequential(self.conv1, self.gdconv, self.conv2, self.bn)
+
+        # weight initialization
+        for m in net:
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out')
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.ones_(m.weight)
+                nn.init.zeros_(m.bias)
 
     def forward(self, x):
         x = self.features(x)
