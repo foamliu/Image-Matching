@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 from tqdm import tqdm
 
 from config import im_size
-from config import num_tests, IMG_DIR
+from config import num_tests, IMG_DIR_ALIGNED
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
@@ -27,7 +27,7 @@ def extract(filename):
 
 
 def get_image(transformer, file):
-    file = os.path.join(IMG_DIR, file)
+    file = os.path.join(IMG_DIR_ALIGNED, file)
     img = cv.imread(file)
     img = cv.resize(img, (im_size, im_size))
     img = img[..., ::-1]  # RGB
