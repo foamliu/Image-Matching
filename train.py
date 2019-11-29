@@ -60,7 +60,7 @@ def train_net(args):
                                                num_workers=num_workers)
 
     # scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30, 40], gamma=0.1)
-    scheduler = MultiStepLR(optimizer, milestones=[10, 20], gamma=0.1)
+    scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30], gamma=0.1)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
