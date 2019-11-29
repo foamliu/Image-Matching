@@ -3,7 +3,7 @@ import os
 import torch
 from torch import nn
 from torch.quantization import QuantStub, DeQuantStub
-from torchsummary import summary
+from torchscope import scope
 
 from config import device
 
@@ -172,4 +172,4 @@ def print_size_of_model(model):
 if __name__ == "__main__":
     model = MobileNetV2().to(device)
     print(model)
-    summary(model, input_size=(3, 224, 224))
+    scope(model, input_size=(3, 224, 224))
