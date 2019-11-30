@@ -3,7 +3,7 @@ import warnings
 import numpy as np
 import torch
 from torch import nn
-# from torch.optim.lr_scheduler import MultiStepLR
+from torch.optim.lr_scheduler import MultiStepLR
 from torch.utils.tensorboard import SummaryWriter
 
 from config import device, grad_clip, print_freq, num_workers
@@ -30,10 +30,10 @@ def train_net(args):
         model = MobileNetV2()
         metric_fc = ArcMarginModel(args)
 
-        # optimizer = torch.optim.SGD([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
-        #                             lr=args.lr, momentum=args.mom, weight_decay=args.weight_decay, nesterov=True)
-        optimizer = torch.optim.Adam([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
-                                     lr=args.lr, weight_decay=args.weight_decay)
+        optimizer = torch.optim.SGD([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
+                                    lr=args.lr, momentum=args.mom, weight_decay=args.weight_decay, nesterov=True)
+        # optimizer = torch.optim.Adam([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
+        #                              lr=args.lr, weight_decay=args.weight_decay)
 
         model = nn.DataParallel(model)
         metric_fc = nn.DataParallel(metric_fc)
@@ -60,7 +60,7 @@ def train_net(args):
                                                num_workers=num_workers)
 
     # scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30, 40], gamma=0.1)
-    # scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30], gamma=0.1)
+    scheduler = MultiStepLR(optimizer, milestones=[10, 20], gamma=0.1)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):
@@ -85,7 +85,7 @@ def train_net(args):
         writer.add_scalar('model/valid_accuracy', val_acc, epoch)
         writer.add_scalar('model/valid_threshold', thres, epoch)
 
-        # scheduler.step(epoch)
+        scheduler.step(epoch)
 
         # Check if there was an improvement
         is_best = val_acc > best_acc
