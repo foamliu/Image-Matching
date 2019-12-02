@@ -285,7 +285,7 @@ if __name__ == "__main__":
 
     model = model.to(device)
     model.eval()
-    print(model)
+    # print(model)
 
     acc, threshold = test(model)
 
