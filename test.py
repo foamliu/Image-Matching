@@ -60,22 +60,22 @@ def evaluate(model):
     angles = []
 
     elapsed = 0.0
-    with torch.no_grad():
-        for line in tqdm(lines):
-            tokens = line.split()
 
-            start = time.time()
-            x0 = get_feature(model, tokens[0])
-            x1 = get_feature(model, tokens[1])
-            end = time.time()
-            elapsed += (end - start)
+    for line in tqdm(lines):
+        tokens = line.split()
 
-            cosine = np.dot(x0, x1)
-            cosine = np.clip(cosine, -1, 1)
-            theta = math.acos(cosine)
-            theta = theta * 180 / math.pi
-            is_same = tokens[2]
-            angles.append('{} {} {} {} \n'.format(theta, is_same, tokens[0], tokens[1]))
+        start = time.time()
+        x0 = get_feature(model, tokens[0])
+        x1 = get_feature(model, tokens[1])
+        end = time.time()
+        elapsed += (end - start)
+
+        cosine = np.dot(x0, x1)
+        cosine = np.clip(cosine, -1, 1)
+        theta = math.acos(cosine)
+        theta = theta * 180 / math.pi
+        is_same = tokens[2]
+        angles.append('{} {} {} {} \n'.format(theta, is_same, tokens[0], tokens[1]))
 
     elapsed_time = elapsed / (num_tests * 2) * 1000
     print('elapsed time per image: {} ms'.format(elapsed_time))
