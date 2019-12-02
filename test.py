@@ -19,6 +19,7 @@ from data_gen import data_transforms
 angles_file = 'data/angles.txt'
 test_file = 'data/test_pairs_rectified.txt'
 IMG_FOLDER = 'data/data/frame/cron20190326'
+transformer = data_transforms['val']
 
 
 def extract(filename):
@@ -26,7 +27,7 @@ def extract(filename):
         tar.extractall('data')
 
 
-def get_image(transformer, file):
+def get_image(file):
     file = os.path.join(IMG_DIR_ALIGNED, file)
     img = cv.imread(file)
     img = cv.resize(img, (im_size, im_size))
@@ -37,13 +38,19 @@ def get_image(transformer, file):
     return img
 
 
+def get_feature(model, file):
+    img = get_image(file)
+    imgs = img.unsqueeze(dim=0)
+    output = model(imgs)
+    feature = output[0].cpu().numpy()
+    return feature / np.linalg.norm(feature)
+
+
 def evaluate(model):
     model.eval()
 
     with open(test_file, 'r') as file:
         lines = file.readlines()
-
-    transformer = data_transforms['val']
 
     angles = []
 
@@ -51,29 +58,19 @@ def evaluate(model):
     with torch.no_grad():
         for line in tqdm(lines):
             tokens = line.split()
-            file0 = tokens[0]
-            img0 = get_image(transformer, file0)
-            file1 = tokens[1]
-            img1 = get_image(transformer, file1)
-            imgs = torch.zeros([2, 3, im_size, im_size], dtype=torch.float)
-            imgs[0] = img0
-            imgs[1] = img1
 
             start = time.time()
-            output = model(imgs)
+            x0 = get_feature(model, tokens[0])
+            x1 = get_feature(model, tokens[1])
             end = time.time()
             elapsed += (end - start)
 
-            feature0 = output[0].cpu().numpy()
-            feature1 = output[1].cpu().numpy()
-            x0 = feature0 / np.linalg.norm(feature0)
-            x1 = feature1 / np.linalg.norm(feature1)
             cosine = np.dot(x0, x1)
             cosine = np.clip(cosine, -1, 1)
             theta = math.acos(cosine)
             theta = theta * 180 / math.pi
             is_same = tokens[2]
-            angles.append('{} {} {} {} \n'.format(theta, is_same, file0, file1))
+            angles.append('{} {} {} {} \n'.format(theta, is_same, tokens[0], tokens[1]))
 
     elapsed_time = elapsed / (num_tests * 2) * 1000
     print('elapsed time per image: {} ms'.format(elapsed_time))
