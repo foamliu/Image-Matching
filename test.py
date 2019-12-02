@@ -12,7 +12,6 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from config import im_size
 from config import num_tests, IMG_DIR_ALIGNED
 from data_gen import data_transforms
 
