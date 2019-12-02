@@ -27,10 +27,12 @@ def extract(filename):
         tar.extractall('data')
 
 
-def get_image(file):
+def get_image(file, flip=False):
     file = os.path.join(IMG_DIR_ALIGNED, file)
     img = cv.imread(file)
     img = cv.resize(img, (im_size, im_size))
+    if flip:
+        img = cv.flip(img, 1)
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
     img = transformer(img)
@@ -39,10 +41,13 @@ def get_image(file):
 
 
 def get_feature(model, file):
-    img = get_image(file)
-    imgs = img.unsqueeze(dim=0)
+    imgs = torch.zeros([2, 3, 224, 224], dtype=torch.float, device=device)
+    imgs[0] = get_image(file, False)
+    imgs[1] = get_image(file, True)
     output = model(imgs)
-    feature = output[0].cpu().numpy()
+    feature_0 = output[0].cpu().numpy()
+    feature_1 = output[1].cpu().numpy()
+    feature = feature_0 + feature_1
     return feature / np.linalg.norm(feature)
 
 
