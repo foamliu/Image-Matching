@@ -12,7 +12,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from config import num_tests, IMG_DIR_ALIGNED
+from config import num_tests, IMG_DIR
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
@@ -27,7 +27,7 @@ def extract(filename):
 
 
 def get_image(file, flip=False):
-    file = os.path.join(IMG_DIR_ALIGNED, file)
+    file = os.path.join(IMG_DIR, file)
     img = cv.imread(file)
     # img = cv.resize(img, (im_size, im_size))
     if flip:
@@ -204,7 +204,7 @@ def error_analysis(threshold):
 
 
 def copy_file(old, new):
-    old = os.path.join(IMG_DIR_ALIGNED, old)
+    old = os.path.join(IMG_DIR, old)
     print(old)
     img = cv.imread(old)
     new_fn = os.path.join('images', new)
