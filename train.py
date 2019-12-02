@@ -30,10 +30,12 @@ def train_net(args):
         model = MobileNetV2()
         metric_fc = ArcMarginModel(args)
 
-        optimizer = torch.optim.SGD([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
-                                    lr=args.lr, momentum=args.mom, weight_decay=args.weight_decay, nesterov=True)
-        # optimizer = torch.optim.Adam([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
-        #                              lr=args.lr, weight_decay=args.weight_decay)
+        if args.optimizer == 'sgd':
+            optimizer = torch.optim.SGD([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
+                                        lr=args.lr, momentum=args.mom, weight_decay=args.weight_decay, nesterov=True)
+        else:
+            optimizer = torch.optim.Adam([{'params': model.parameters()}, {'params': metric_fc.parameters()}],
+                                         lr=args.lr, weight_decay=args.weight_decay)
 
         model = nn.DataParallel(model)
         metric_fc = nn.DataParallel(metric_fc)
