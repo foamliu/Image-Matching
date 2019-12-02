@@ -44,7 +44,8 @@ def get_feature(model, file):
     imgs = torch.zeros([2, 3, 224, 224], dtype=torch.float, device=device)
     imgs[0] = get_image(file, False)
     imgs[1] = get_image(file, True)
-    output = model(imgs)
+    with torch.no_grad():
+        output = model(imgs)
     feature_0 = output[0].cpu().numpy()
     feature_1 = output[1].cpu().numpy()
     feature = feature_0 + feature_1
