@@ -30,7 +30,7 @@ def extract(filename):
 def get_image(file, flip=False):
     file = os.path.join(IMG_DIR_ALIGNED, file)
     img = cv.imread(file)
-    img = cv.resize(img, (im_size, im_size))
+    # img = cv.resize(img, (im_size, im_size))
     if flip:
         img = cv.flip(img, 1)
     img = img[..., ::-1]  # RGB
