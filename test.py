@@ -35,7 +35,7 @@ def get_image(file, flip=False):
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
     img = transformer(img)
-    # img = img.to(device)
+    img = img.to(device)
     return img
 
 
