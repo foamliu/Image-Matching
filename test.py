@@ -12,7 +12,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from config import num_tests, IMG_DIR
+from config import num_tests, IMG_DIR, device
 from data_gen import data_transforms
 
 angles_file = 'data/angles.txt'
