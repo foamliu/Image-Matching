@@ -39,15 +39,24 @@ def get_image(file, flip=False):
     return img
 
 
+# def get_feature(model, file):
+#     imgs = torch.zeros([2, 3, 224, 224], dtype=torch.float, device=device)
+#     imgs[0] = get_image(file, False)
+#     imgs[1] = get_image(file, True)
+#     with torch.no_grad():
+#         output = model(imgs)
+#     feature_0 = output[0].cpu().numpy()
+#     feature_1 = output[1].cpu().numpy()
+#     feature = feature_0 + feature_1
+#     return feature / np.linalg.norm(feature)
+
+
 def get_feature(model, file):
-    imgs = torch.zeros([2, 3, 224, 224], dtype=torch.float, device=device)
-    imgs[0] = get_image(file, False)
-    imgs[1] = get_image(file, True)
+    img = get_image(file)
+    imgs = img.unsqueeze(dim=0)
     with torch.no_grad():
         output = model(imgs)
-    feature_0 = output[0].cpu().numpy()
-    feature_1 = output[1].cpu().numpy()
-    feature = feature_0 + feature_1
+    feature = output[0].cpu().numpy()
     return feature / np.linalg.norm(feature)
 
 
