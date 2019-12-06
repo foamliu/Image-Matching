@@ -8,8 +8,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 from config import device, grad_clip, print_freq, num_workers
 from data_gen import FrameDataset
-from mobilenet_v2 import MobileNetV2
-from models import ArcMarginModel
+from models import MatchMobile, ArcMarginModel
 from test import test
 from utils import parse_args, save_checkpoint, AverageMeter, clip_gradient, accuracy, get_logger
 
@@ -27,7 +26,7 @@ def train_net(args):
 
     # Initialize / load checkpoint
     if checkpoint is None:
-        model = MobileNetV2()
+        model = MatchMobile()
         metric_fc = ArcMarginModel(args)
 
         if args.optimizer == 'sgd':
@@ -61,8 +60,8 @@ def train_net(args):
     train_loader = torch.utils.data.DataLoader(FrameDataset('train'), batch_size=args.batch_size, shuffle=True,
                                                num_workers=num_workers)
 
-    # scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30, 40], gamma=0.1)
-    scheduler = MultiStepLR(optimizer, milestones=[5, 10], gamma=0.1)
+    scheduler = MultiStepLR(optimizer, milestones=[10, 20, 30, 40], gamma=0.1)
+    # scheduler = MultiStepLR(optimizer, milestones=[5, 10], gamma=0.1)
 
     # Epochs
     for epoch in range(start_epoch, args.end_epoch):

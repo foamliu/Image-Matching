@@ -41,30 +41,16 @@ class MatchMobile(nn.Module):
         modules = list(mobilenet.children())[:-1]
         self.features = nn.Sequential(*modules)
         # building last several layers
-        self.conv1 = ConvBNReLU(1280, 512, kernel_size=1)
-        self.gdconv = GDConv(in_planes=512, out_planes=512, kernel_size=7, padding=0)
-        self.conv2 = nn.Conv2d(512, 128, kernel_size=1)
-        self.bn = nn.BatchNorm2d(128)
-
-        net = nn.Sequential(self.conv1, self.gdconv, self.conv2, self.bn)
-
-        # weight initialization
-        for m in net:
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out')
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
-            elif isinstance(m, nn.BatchNorm2d):
-                nn.init.ones_(m.weight)
-                nn.init.zeros_(m.bias)
+        self.dw_conv = GDConv(in_planes=1280, out_planes=1280, kernel_size=7, padding=0)
+        self.fc = nn.Linear(1280, 512)
+        self.bn = nn.BatchNorm1d(512)
 
     def forward(self, x):
         x = self.features(x)
-        x = self.conv1(x)
-        x = self.gdconv(x)
-        x = self.conv2(x)
-        x = self.bn(x)
+        x = self.dw_conv(x)
         x = x.view(x.size(0), -1)
+        x = self.fc(x)
+        x = self.bn(x)
         return x
 
 
