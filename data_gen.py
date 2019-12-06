@@ -6,7 +6,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from config import IMG_DIR_ALIGNED, im_size, pickle_file
+from config import IMG_DIR, im_size, pickle_file
 
 # Data augmentation and normalization for training
 # Just normalization for validation
@@ -39,7 +39,7 @@ class FrameDataset(Dataset):
 
     def __getitem__(self, i):
         sample = self.samples[i]
-        filename = os.path.join(IMG_DIR_ALIGNED, sample['img'])
+        filename = os.path.join(IMG_DIR, sample['img'])
         label = sample['label']
 
         # print(filename)
