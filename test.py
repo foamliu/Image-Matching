@@ -287,9 +287,9 @@ if __name__ == "__main__":
     # device = torch.device('cpu')
     print('test with {}'.format(device))
 
-    # checkpoint = 'BEST_checkpoint.tar'
-    # checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
-    # model = checkpoint['model'].module
+    checkpoint = 'BEST_checkpoint.tar'
+    checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
+    model = checkpoint['model'].module
 
     # filename = 'image_matching_mobile.pt'
     # model = MobileNetV2()
@@ -307,8 +307,8 @@ if __name__ == "__main__":
     # scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
     # model = torch.jit.load(scripted_quantized_model_file)
 
-    scripted_float_model_file = 'mobilenet_quantization_scripted.pth'
-    model = torch.jit.load(scripted_float_model_file)
+    # scripted_float_model_file = 'mobilenet_quantization_scripted.pth'
+    # model = torch.jit.load(scripted_float_model_file)
 
     model = model.to(device)
     model.eval()
