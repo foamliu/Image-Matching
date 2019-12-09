@@ -195,6 +195,7 @@ def error_analysis(threshold):
         copy_file(file0, '{}_fp_0.jpg'.format(i))
         file1 = tokens[1]
         copy_file(file1, '{}_fp_1.jpg'.format(i))
+        copy_original(file1, '{}_fp_1_original.jpg'.format(i), IMG_FOLDER)
 
     for i in range(num_fn):
         fn_id = fn[i]
@@ -204,6 +205,7 @@ def error_analysis(threshold):
         copy_file(file0, '{}_fn_0.jpg'.format(i))
         file1 = tokens[1]
         copy_file(file1, '{}_fn_1.jpg'.format(i))
+        copy_original(file1, '{}_fn_1_original.jpg'.format(i), IMG_FOLDER)
 
     with open('data/errors.txt', 'w') as file:
         file.write('FP:\n')
@@ -217,6 +219,15 @@ def copy_file(old, new):
     print(old)
     img = cv.imread(old)
     new_fn = os.path.join('images', new)
+    cv.imwrite(new_fn, img)
+
+
+def copy_original(old_file, new_file, old_folder=IMG_FOLDER):
+    old_file = os.path.join(old_folder, old_file)
+    print(old_file)
+    img = cv.imread(old_file)
+    img = cv.resize(img, (448, 448))
+    new_fn = os.path.join('images', new_file)
     cv.imwrite(new_fn, img)
 
 
