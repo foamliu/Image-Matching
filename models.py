@@ -33,9 +33,9 @@ class GDConv(nn.Module):
         return x
 
 
-class MatchMobile(nn.Module):
+class MobileNetMatchModel(nn.Module):
     def __init__(self):
-        super(MatchMobile, self).__init__()
+        super(MobileNetMatchModel, self).__init__()
         mobilenet = models.mobilenet_v2(pretrained=True)
         # Remove linear layer
         modules = list(mobilenet.children())[:-1]
@@ -48,6 +48,25 @@ class MatchMobile(nn.Module):
     def forward(self, x):
         x = self.features(x)
         x = self.dw_conv(x)
+        x = x.view(x.size(0), -1)
+        x = self.fc(x)
+        x = self.bn(x)
+        return x
+
+
+class ResNetMatchModel(nn.Module):
+    def __init__(self):
+        super(ResNetMatchModel, self).__init__()
+        resnet = models.resnet50(pretrained=True)
+        # Remove linear layer
+        modules = list(resnet.children())[:-1]
+        self.features = nn.Sequential(*modules)
+        # building last several layers
+        self.fc = nn.Linear(2048, 512)
+        self.bn = nn.BatchNorm1d(512)
+
+    def forward(self, x):
+        x = self.features(x)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
         x = self.bn(x)
@@ -89,5 +108,5 @@ class ArcMarginModel(nn.Module):
 
 
 if __name__ == "__main__":
-    model = MatchMobile()
+    model = ResNetMatchModel()
     scope(model, input_size=(3, 224, 224))
