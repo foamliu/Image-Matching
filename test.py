@@ -14,6 +14,7 @@ from tqdm import tqdm
 
 from config import num_tests, IMG_DIR, device
 from data_gen import data_transforms
+from utils import ensure_folder
 
 angles_file = 'data/angles.txt'
 test_file = 'data/test_pairs_rectified.txt'
@@ -135,6 +136,7 @@ def visualize(threshold):
 
     plt.legend(loc='upper right')
     plt.plot([threshold, threshold], [0, 0.05], 'k-', lw=2)
+    ensure_folder('images')
     plt.savefig('images/theta_dist.png')
     plt.show()
 
