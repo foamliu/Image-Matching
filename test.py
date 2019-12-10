@@ -12,7 +12,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from config import num_tests, IMG_DIR, device
+from config import num_tests, IMG_DIR
 from data_gen import data_transforms
 from utils import ensure_folder
 
@@ -286,6 +286,8 @@ if __name__ == "__main__":
     args = parse_args()
     if not args.gpu:
         device = torch.device('cpu')
+    else:
+        from config import device
     print('test with {}'.format(device))
 
     checkpoint = 'BEST_checkpoint.tar'
