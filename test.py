@@ -279,9 +279,16 @@ if __name__ == "__main__":
     #    from config import device
     print('test with {}'.format(device))
 
-    checkpoint = 'BEST_checkpoint.tar'
-    checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
-    model = checkpoint['model'].module
+    # checkpoint = 'BEST_checkpoint.tar'
+    # checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
+    # model = checkpoint['model'].module
+
+    filename = 'image_matching.pt'
+    from models import ResNetMatchModel
+    model = ResNetMatchModel()
+    model.load_state_dict(torch.load(filename))
+    model = model.to(device)
+    model.eval()
 
     # filename = 'image_matching_mobile.pt'
     # model = MobileNetV2()
