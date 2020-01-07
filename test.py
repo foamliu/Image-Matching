@@ -274,7 +274,7 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     # if not args.gpu:
-    device = torch.device('cpu')
+    device = torch.device('cuda')
     # else:
     #    from config import device
     print('test with {}'.format(device))

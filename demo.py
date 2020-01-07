@@ -52,4 +52,5 @@ if __name__ == "__main__":
     theta = math.acos(cosine)
     theta = theta * 180 / math.pi
 
+    print(theta)
     print(theta <= threshold)
