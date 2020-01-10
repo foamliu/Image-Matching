@@ -27,12 +27,10 @@ def extract(filename):
         tar.extractall('data')
 
 
-def get_image(file, flip=False):
+def get_image(file):
     file = os.path.join(IMG_DIR, file)
     img = cv.imread(file)
     img = cv.resize(img, (im_size, im_size))
-    if flip:
-        img = cv.flip(img, 1)
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
     img = transformer(img)
@@ -279,9 +277,9 @@ if __name__ == "__main__":
     #    from config import device
     print('test with {}'.format(device))
 
-    # checkpoint = 'BEST_checkpoint.tar'
-    # checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
-    # model = checkpoint['model'].module
+    checkpoint = 'BEST_checkpoint.tar'
+    checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
+    model = checkpoint['model'].module
 
     # filename = 'image_matching.pt'
     # from models import ResNetMatchModel
@@ -306,8 +304,8 @@ if __name__ == "__main__":
     # scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
     # model = torch.jit.load(scripted_quantized_model_file)
 
-    scripted_float_model_file = 'image_matching_mobile_scripted.pt'
-    model = torch.jit.load(scripted_float_model_file)
+    # scripted_float_model_file = 'image_matching_mobile_scripted.pt'
+    # model = torch.jit.load(scripted_float_model_file)
 
     model = model.to(device)
     model.eval()
