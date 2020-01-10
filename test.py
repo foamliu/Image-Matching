@@ -12,7 +12,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from config import num_tests, IMG_DIR, im_size
+from config import device, num_tests, IMG_DIR, im_size
 from data_gen import data_transforms
 from utils import ensure_folder
 
