@@ -283,12 +283,12 @@ if __name__ == "__main__":
     # checkpoint = torch.load(checkpoint, map_location=torch.device('cpu'))
     # model = checkpoint['model'].module
 
-    filename = 'image_matching.pt'
-    from models import ResNetMatchModel
-    model = ResNetMatchModel()
-    model.load_state_dict(torch.load(filename))
-    model = model.to(device)
-    model.eval()
+    # filename = 'image_matching.pt'
+    # from models import ResNetMatchModel
+    # model = ResNetMatchModel()
+    # model.load_state_dict(torch.load(filename))
+    # model = model.to(device)
+    # model.eval()
 
     # filename = 'image_matching_mobile.pt'
     # model = MobileNetV2()
@@ -306,8 +306,8 @@ if __name__ == "__main__":
     # scripted_quantized_model_file = 'mobilenet_quantization_scripted_quantized.pth'
     # model = torch.jit.load(scripted_quantized_model_file)
 
-    # scripted_float_model_file = 'mobilenet_quantization_scripted.pth'
-    # model = torch.jit.load(scripted_float_model_file)
+    scripted_float_model_file = 'image_matching_mobile_scripted.pt'
+    model = torch.jit.load(scripted_float_model_file)
 
     model = model.to(device)
     model.eval()
