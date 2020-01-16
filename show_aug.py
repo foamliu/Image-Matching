@@ -23,5 +23,6 @@ if __name__ == "__main__":
         full_path = os.path.join(IMG_DIR, img_path)
         print(full_path)
         img = Image.open(full_path)
+        print(img.size)
         img = transformer(img)
         img.save('images/{}_aug.jpg'.format(i))
