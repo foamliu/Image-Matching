@@ -27,7 +27,7 @@ if __name__ == "__main__":
         img = Image.open(full_path)
         print(img.size)
         img = transformer(img)
-        img.save('images/{}_train_aug.jpg'.format(i))
+        img.save('images/train_aug_{}.jpg'.format(i))
 
     transformer = transforms.Compose([
         transforms.Resize(256),
@@ -46,4 +46,4 @@ if __name__ == "__main__":
         img = Image.open(full_path)
         print(img.size)
         img = transformer(img)
-        img.save('images/{}_valid_aug.jpg'.format(i))
+        img.save('images/valid_aug_{}.jpg'.format(i))
