@@ -1,7 +1,6 @@
 import os
 import pickle
 
-import cv2 as cv
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms
@@ -41,9 +40,7 @@ class FrameDataset(Dataset):
         label = sample['label']
 
         # print(filename)
-        img = cv.imread(filename)  # BGR
-        img = img[..., ::-1]  # RGB
-        img = Image.fromarray(img, 'RGB')  # RGB
+        img = Image.open(filename)
         img = self.transformer(img)  # RGB
 
         return img, label
