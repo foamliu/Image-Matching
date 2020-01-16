@@ -4,15 +4,14 @@ from multiprocessing import Pool
 import cv2 as cv
 from tqdm import tqdm
 
-from config import IMG_DIR_TEST
-
 im_size = 256
 
 new_folder = 'data/jinhai531_resized'
+old_folder = 'data/test/data'
 
 
 def resize_images(d):
-    dir = os.path.join(IMG_DIR_TEST, d)
+    dir = os.path.join(old_folder, d)
     files = [f for f in os.listdir(dir) if f.endswith('.jpg')]
 
     dst_folder = os.path.join(new_folder, d)
@@ -31,6 +30,6 @@ if __name__ == "__main__":
     if not os.path.isdir(new_folder):
         os.makedirs(new_folder)
 
-    dirs = [d for d in os.listdir(IMG_DIR_TEST) if os.path.isdir(os.path.join(IMG_DIR_TEST, d))]
+    dirs = [d for d in os.listdir(old_folder) if os.path.isdir(os.path.join(old_folder, d))]
     with Pool(6) as p:
         r = list(tqdm(p.imap(resize_images, dirs), total=len(dirs)))

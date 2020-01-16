@@ -19,6 +19,6 @@ num_samples = 373471
 num_tests = 10000
 DATA_DIR = 'data'
 IMG_DIR = 'data/cron20190326_resized/'
-IMG_DIR_TEST = 'data/test/data'
+IMG_DIR_TEST = 'data/jinhai531_resized'
 pickle_file = 'data/cron20190326.pickle'
 pickle_test_file = 'data/jinhai_531.pickle'
