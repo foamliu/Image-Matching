@@ -9,8 +9,8 @@ from config import pickle_file, IMG_DIR
 
 if __name__ == "__main__":
     transformer = transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
+        # transforms.RandomResizedCrop(224),
+        # transforms.RandomHorizontalFlip(),
     ])
 
     with open(pickle_file, 'rb') as fp:
