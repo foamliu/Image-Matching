@@ -14,7 +14,7 @@ def get_data():
         build_mapping(d)
 
         dir = os.path.join(IMG_DIR, d)
-        files = [f for f in os.listdir(dir) if f.endswith('.jpg')]
+        files = [f for f in os.listdir(dir) if f.lower().endswith('.jpg')]
 
         for f in files:
             img_path = os.path.join(d, f)
