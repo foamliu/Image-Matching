@@ -28,8 +28,8 @@ def image_aug(split, transformer):
 
 def main():
     transformer = transforms.Compose([
+        transforms.ColorJitter(brightness=0.250, contrast=0.250, saturation=0.250),
         transforms.RandomAffine(degrees=10, translate=(0.1, 0.1), scale=(0.9, 1.1)),
-        transforms.ColorJitter(brightness=0.125, contrast=0.125, saturation=0.125),
         transforms.Resize((224, 224)),
         # transforms.RandomResizedCrop(224),
         # transforms.RandomHorizontalFlip(),
