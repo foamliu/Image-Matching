@@ -14,9 +14,11 @@ print_freq = 100  # print training/validation stats  every __ batches
 checkpoint = None  # path to checkpoint, None if none
 
 # Data parameters
-num_classes = 9935
-num_samples = 357693  # before filtering: 373471
+num_classes = 9934
+num_samples = 373471
 num_tests = 10000
 DATA_DIR = 'data'
 IMG_DIR = 'data/cron20190326_resized/'
+IMG_DIR_TEST = 'data/jinhai_531.tar/jinhai_531/data'
 pickle_file = 'data/cron20190326.pickle'
+pickle_test_file = 'data/jinhai_531.pickle'

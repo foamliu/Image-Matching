@@ -12,13 +12,12 @@ from PIL import Image
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 
-from config import device, num_tests, IMG_DIR, im_size
+from config import device, num_tests, IMG_DIR_TEST
 from data_gen import data_transforms
 from utils import ensure_folder
 
 angles_file = 'data/angles.txt'
-test_file = 'data/test_pairs_rectified.txt'
-IMG_FOLDER = 'data/data/frame/cron20190326'
+test_file = 'data/test_pairs.txt'
 transformer = data_transforms['val']
 
 
@@ -28,9 +27,8 @@ def extract(filename):
 
 
 def get_image(file):
-    file = os.path.join(IMG_DIR, file)
+    file = os.path.join(IMG_DIR_TEST, file)
     img = cv.imread(file)
-    img = cv.resize(img, (im_size, im_size))
     img = img[..., ::-1]  # RGB
     img = Image.fromarray(img, 'RGB')  # RGB
     img = transformer(img)
@@ -213,7 +211,7 @@ def error_analysis(threshold):
 
 
 def copy_file(old, new):
-    old = os.path.join(IMG_DIR, old)
+    old = os.path.join(IMG_DIR_TEST, old)
     # print(old)
     img = cv.imread(old)
     new_fn = os.path.join('images', new)
