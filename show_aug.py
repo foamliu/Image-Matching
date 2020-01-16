@@ -30,14 +30,14 @@ def main():
     transformer = transforms.Compose([
         transforms.RandomAffine(degrees=10, translate=(0.1, 0.1), scale=(0.9, 1.1)),
         transforms.ColorJitter(brightness=0.125, contrast=0.125, saturation=0.125),
-        transforms.Resize(256),
+        transforms.Resize(224),
         # transforms.RandomResizedCrop(224),
         # transforms.RandomHorizontalFlip(),
     ])
     image_aug('train', transformer)
 
     transformer = transforms.Compose([
-        transforms.Resize(256),
+        transforms.Resize(224),
     ])
     image_aug('valid', transformer)
 
