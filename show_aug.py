@@ -10,7 +10,7 @@ from config import pickle_file
 old_folder = 'data/data/frame/cron20190326'
 
 
-def image_aug(transformer, split):
+def image_aug(split, transformer):
     with open(pickle_file, 'rb') as fp:
         samples = pickle.load(fp)
 
