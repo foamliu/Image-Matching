@@ -27,4 +27,23 @@ if __name__ == "__main__":
         img = Image.open(full_path)
         print(img.size)
         img = transformer(img)
-        img.save('images/{}_aug.jpg'.format(i))
+        img.save('images/{}_train_aug.jpg'.format(i))
+
+    transformer = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+    ])
+
+    with open(pickle_file, 'rb') as fp:
+        samples = pickle.load(fp)
+
+    samples = random.sample(samples, 10)
+
+    for i, sample in enumerate(samples):
+        img_path = sample['img_path']
+        full_path = os.path.join(old_folder, img_path)
+        print(full_path)
+        img = Image.open(full_path)
+        print(img.size)
+        img = transformer(img)
+        img.save('images/{}_valid_aug.jpg'.format(i))
