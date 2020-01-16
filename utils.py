@@ -1,5 +1,6 @@
 import argparse
 import logging
+import tarfile
 import zipfile
 
 import cv2
@@ -118,8 +119,14 @@ def draw_str(dst, target, s):
     cv2.putText(dst, s, (x, y), cv2.FONT_HERSHEY_PLAIN, 1.0, (255, 255, 255), lineType=cv2.LINE_AA)
 
 
-def extract(filename):
+def extract_zip(filename):
     print('Extracting {}...'.format(filename))
     zip_ref = zipfile.ZipFile(filename, 'r')
     zip_ref.extractall('data')
     zip_ref.close()
+
+
+def extract_tgz(filename):
+    print('Extracting {}...'.format(filename))
+    with tarfile.open(filename) as tar:
+        tar.extractall('data/test')

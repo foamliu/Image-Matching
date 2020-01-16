@@ -1,6 +1,6 @@
-from utils import extract
+from utils import extract_zip, extract_tgz
 
 if __name__ == "__main__":
-    # if not os.path.isdir('data/cron20190326_resized'):
-    extract('data/cron20190326.zip')
-    extract('data/cron20190415.zip')
+    extract_zip('data/cron20190326.zip')
+    extract_zip('data/cron20190415.zip')
+    extract_tgz('data/jinhai_531.tar.gz')

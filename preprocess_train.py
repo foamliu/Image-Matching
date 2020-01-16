@@ -1,8 +1,9 @@
 import os
+import pickle
 
 from tqdm import tqdm
 
-from config import IMG_DIR
+from config import IMG_DIR, pickle_file
 
 
 def get_data():
@@ -37,3 +38,6 @@ if __name__ == "__main__":
 
     samples = get_data()
     print('len(samples): ' + str(len(samples)))
+
+    with open(pickle_file, 'wb') as file:
+        pickle.dump(samples, file)
