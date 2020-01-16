@@ -9,12 +9,8 @@ from config import pickle_file
 
 old_folder = 'data/data/frame/cron20190326'
 
-if __name__ == "__main__":
-    transformer = transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
-    ])
 
+def image_aug(transformer, split):
     with open(pickle_file, 'rb') as fp:
         samples = pickle.load(fp)
 
@@ -27,23 +23,24 @@ if __name__ == "__main__":
         img = Image.open(full_path)
         print(img.size)
         img = transformer(img)
-        img.save('images/train_aug_{}.jpg'.format(i))
+        img.save('images/{}_aug_{}.jpg'.format(split, i))
+
+
+def main():
+    transformer = transforms.Compose([
+        transforms.RandomAffine(degrees=20, translate=(0.1, 0.1), scale=(0.8, 1.2)),
+        transforms.ColorJitter(brightness=0.125, contrast=0.125, saturation=0.125),
+        transforms.Resize(256),
+        # transforms.RandomResizedCrop(224),
+        # transforms.RandomHorizontalFlip(),
+    ])
+    image_aug('train', transformer)
 
     transformer = transforms.Compose([
         transforms.Resize(256),
-        transforms.CenterCrop(224),
     ])
+    image_aug('valid', transformer)
 
-    with open(pickle_file, 'rb') as fp:
-        samples = pickle.load(fp)
 
-    samples = random.sample(samples, 10)
-
-    for i, sample in enumerate(samples):
-        img_path = sample['img_path']
-        full_path = os.path.join(old_folder, img_path)
-        print(full_path)
-        img = Image.open(full_path)
-        print(img.size)
-        img = transformer(img)
-        img.save('images/valid_aug_{}.jpg'.format(i))
+if __name__ == "__main__":
+    main()
