@@ -41,7 +41,9 @@ class FrameDataset(Dataset):
 
         # print(filename)
         img = Image.open(filename)
-        img = self.transformer(img)  # RGB
+        img = self.transformer(img)
+
+        print(img.size())
 
         return img, label
 
