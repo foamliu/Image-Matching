@@ -86,7 +86,7 @@ def parse_args():
     parser.add_argument('--optimizer', default='sgd', help='optimizer')
     parser.add_argument('--weight-decay', type=float, default=1e-4, help='weight decay')
     parser.add_argument('--mom', type=float, default=0.9, help='momentum')
-    parser.add_argument('--batch-size', type=int, default=32, help='batch size in each context')
+    parser.add_argument('--batch-size', type=int, default=64, help='batch size in each context')
     parser.add_argument('--margin-m', type=float, default=0.5, help='angular margin m')
     parser.add_argument('--margin-s', type=float, default=64.0, help='feature scale s')
     parser.add_argument('--easy-margin', type=bool, default=False, help='easy margin')
