@@ -4,16 +4,16 @@ import random
 
 from tqdm import tqdm
 
-from config import IMG_DIR_ALIGNED, pickle_file, num_tests
+from config import IMG_DIR, pickle_file, num_tests
 
 
 def get_data():
     samples = []
-    dirs = [d for d in os.listdir(IMG_DIR_ALIGNED) if os.path.isdir(os.path.join(IMG_DIR_ALIGNED, d))]
+    dirs = [d for d in os.listdir(IMG_DIR) if os.path.isdir(os.path.join(IMG_DIR, d))]
     for d in tqdm(dirs):
         build_vocab(d)
 
-        dir = os.path.join(IMG_DIR_ALIGNED, d)
+        dir = os.path.join(IMG_DIR, d)
         files = [f for f in os.listdir(dir) if f.endswith('.jpg')]
 
         for f in files:
@@ -33,7 +33,7 @@ def build_vocab(token):
 
 
 def pick_one_file(folder):
-    files = [f for f in os.listdir(os.path.join(IMG_DIR_ALIGNED, folder)) if f.endswith('.jpg') and not f.endswith('0.jpg')]
+    files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg') and not f.endswith('0.jpg')]
     file = random.choice(files)
     file = os.path.join(folder, file)
     file = file.replace('\\', '/')
@@ -52,13 +52,13 @@ if __name__ == "__main__":
 
     picked = set()
     for _ in tqdm(range(num_same)):
-        dirs = [d for d in os.listdir(IMG_DIR_ALIGNED) if os.path.isdir(os.path.join(IMG_DIR_ALIGNED, d))]
+        dirs = [d for d in os.listdir(IMG_DIR) if os.path.isdir(os.path.join(IMG_DIR, d))]
         folder = random.choice(dirs)
-        while len([f for f in os.listdir(os.path.join(IMG_DIR_ALIGNED, folder)) if
+        while len([f for f in os.listdir(os.path.join(IMG_DIR, folder)) if
                    f.endswith('.jpg') and not f.endswith('0.jpg')]) < 1:
             folder = random.choice(dirs)
 
-        files = [f for f in os.listdir(os.path.join(IMG_DIR_ALIGNED, folder)) if f.endswith('.jpg') and not f.endswith('0.jpg')]
+        files = [f for f in os.listdir(os.path.join(IMG_DIR, folder)) if f.endswith('.jpg') and not f.endswith('0.jpg')]
         file_1 = random.choice(files)
         file_0 = os.path.join(folder, '0.jpg').replace('\\', '/')
         file_1 = os.path.join(folder, file_1).replace('\\', '/')
@@ -67,11 +67,11 @@ if __name__ == "__main__":
         exclude_list.add(file_1)
 
     for _ in tqdm(range(num_not_same)):
-        dirs = [d for d in os.listdir(IMG_DIR_ALIGNED) if os.path.isdir(os.path.join(IMG_DIR_ALIGNED, d))]
+        dirs = [d for d in os.listdir(IMG_DIR) if os.path.isdir(os.path.join(IMG_DIR, d))]
         folders = random.sample(dirs, 2)
-        while len([f for f in os.listdir(os.path.join(IMG_DIR_ALIGNED, folders[0])) if
+        while len([f for f in os.listdir(os.path.join(IMG_DIR, folders[0])) if
                    f.endswith('.jpg') and not f.endswith('0.jpg')]) < 1 or len(
-            [f for f in os.listdir(os.path.join(IMG_DIR_ALIGNED, folders[1])) if
+            [f for f in os.listdir(os.path.join(IMG_DIR, folders[1])) if
              f.endswith('.jpg') and not f.endswith('0.jpg')]) < 1:
             folders = random.sample(dirs, 2)
 
