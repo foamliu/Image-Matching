@@ -43,7 +43,7 @@ class FrameDataset(Dataset):
         img = Image.open(filename)
         img = self.transformer(img)
 
-        print(img.size())
+        # print(img.size())
 
         return img, label
 
