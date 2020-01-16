@@ -11,8 +11,8 @@ old_folder = 'data/data/frame/cron20190326'
 
 if __name__ == "__main__":
     transformer = transforms.Compose([
-        # transforms.RandomResizedCrop(224),
-        # transforms.RandomHorizontalFlip(),
+        transforms.RandomResizedCrop(224),
+        transforms.RandomHorizontalFlip(),
     ])
 
     with open(pickle_file, 'rb') as fp:
