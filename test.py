@@ -28,9 +28,7 @@ def extract(filename):
 
 def get_image(file):
     file = os.path.join(IMG_DIR_TEST, file)
-    img = cv.imread(file)
-    img = img[..., ::-1]  # RGB
-    img = Image.fromarray(img, 'RGB')  # RGB
+    img = Image.open(file)
     img = transformer(img)
     img = img.to(device)
     return img
