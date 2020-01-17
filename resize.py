@@ -31,5 +31,5 @@ if __name__ == "__main__":
         os.makedirs(new_folder)
 
     dirs = [d for d in os.listdir(old_folder) if os.path.isdir(os.path.join(old_folder, d))]
-    with Pool(6) as p:
+    with Pool(12) as p:
         r = list(tqdm(p.imap(resize_images, dirs), total=len(dirs)))
