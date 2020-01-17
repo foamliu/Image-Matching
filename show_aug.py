@@ -5,9 +5,9 @@ import random
 from PIL import Image
 from torchvision import transforms
 
-from config import pickle_file
+from config import IMG_DIR, pickle_file
 
-old_folder = 'data/data/frame/cron20190326'
+# old_folder = 'data/data/frame/cron20190326'
 
 
 def image_aug(split, transformer):
@@ -18,7 +18,7 @@ def image_aug(split, transformer):
 
     for i, sample in enumerate(samples):
         img_path = sample['img_path']
-        full_path = os.path.join(old_folder, img_path)
+        full_path = os.path.join(IMG_DIR, img_path)
         print(full_path)
         img = Image.open(full_path)
         print(img.size)
