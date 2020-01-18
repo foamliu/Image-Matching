@@ -4,7 +4,7 @@ from multiprocessing import Pool
 import cv2 as cv
 from tqdm import tqdm
 
-im_size = 1024
+im_size = 512
 
 new_folder = 'data/jinhai531_resized'
 old_folder = 'data/test/data'
